@@ -17,7 +17,6 @@ def start_response(message):
 	elif message.text == 'Регистрация':
 		login(message)
 	else:
-
 		bot.send_message(message.chat.id, 'Непонел.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 
 def login(message):
@@ -33,8 +32,6 @@ def login(message):
 		bot.register_next_step_handler(msg, login_response)
 	else:
 		bot.send_message(message.chat.id, 'Ваш телеграм уже связан с вашим акк для этого бота.\n\nВойдите в акк, отправив снова /start', reply_markup = types.ReplyKeyboardRemove(selective=False))
-def first_setting(message):
-	print(first_setting)
 
 def login_response(message):
 	# gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
@@ -45,7 +42,6 @@ def login_response(message):
 	# key = key.fingerprint
 	key = 'key.fingerprint'
 
-
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
 	query = "INSERT INTO Users (Username, Password, Settings) VALUES ('"+ message.chat.username +"', '"+key+"', 'obj')"
@@ -54,59 +50,86 @@ def login_response(message):
 	conn.close()
 	# os.mkdir('/home/sepezho/Documents/seppass/Users_folder/' + message.chat.username)
 	bot.send_message(message.chat.id, 'Пароль зашифрован и сохранен в БД. Так же создана папка, где ваш никнейм выступил в качестве названия.\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ key)
+	settings_begin(message)
 
-	bot.send_message(message.chat.id, 'Перейдем к настройкам.')
-	settings_main(message)
+def settings_begin(message):
+	markup = types.InlineKeyboardMarkup()
+	markup.add(types.InlineKeyboardButton(text= 'Я доверяю разрабу. Оставлю все как есть.', callback_data = 'return'))
+	markup.add(types.InlineKeyboardButton(text='Я гик. Все настрою сам.', callback_data = 'back'))
+	
+	bot.send_message(message.chat.id, 'Перейдем к настройкам.', reply_markup = markup)
+	@bot.callback_query_handler(func=lambda message: True)
+	def pre_setting_list(message):
+		settings_list(message)
 
+def settings_list(message):
+	if message.data == 'return':
+		settings_return(message)
+	if message.data == 'to_first_list':
+		setting_first_list(message)
+	if message.data == 'to_sec_list':
+		setting_sec_list(message)
+	if message.data == 'finish':
+		setting_finish(message)
+	if message.data == 'back':
+		settings_main(message)
 
 def settings_main(message):
 	markup = types.InlineKeyboardMarkup()
-	switch_button1 = types.InlineKeyboardButton(text='-', callback_data = '1')
-	markup.add(switch_button1)
-	switch_button2 = types.InlineKeyboardButton(text='2', callback_data = '2')
-	markup.add(switch_button2)
-	switch_button3 = types.InlineKeyboardButton(text='3', callback_data = '3')
-	markup.add(switch_button3)
+	markup.add(types.InlineKeyboardButton(text= 'return', callback_data = 'return'))
+	markup.add(types.InlineKeyboardButton(text='to_first_list', callback_data = 'to_first_list'))
+	markup.add(types.InlineKeyboardButton(text='to_sec_list', callback_data = 'to_sec_list'))
+	markup.add(types.InlineKeyboardButton(text='finish', callback_data = 'finish'))
+
+	bot.edit_message_reply_markup(message.message.chat.id, message.message.message_id, "Главная", reply_markup = markup)
+	@bot.callback_query_handler(func=lambda message: True)
+	def pre_setting_list(message):
+		settings_list(message)
+
+def settings_return(message):
+	markup = types.InlineKeyboardMarkup()
+	markup.add(types.InlineKeyboardButton(text= 'Всетаки я доверяю разрабу. Оставлю все как есть.', callback_data = 'return'))
+	markup.add(types.InlineKeyboardButton(text='Я передумал передумывать.', callback_data = 'back'))
+
+	bot.edit_message_reply_markup(message.message.chat.id, message.message.message_id, 'Перейдем к настройкам.', reply_markup = markup)
+	@bot.callback_query_handler(func=lambda message: True)
+	def pre_setting_list(message):
+		settings_list(message)
+
+def setting_first_list(message):
+	markup = types.InlineKeyboardMarkup()
+	markup.add(types.InlineKeyboardButton(text='return', callback_data = 'return'))
+	markup.add(types.InlineKeyboardButton(text='punkt_one_first_setting', callback_data = 'to_first_first_setting'))
+	markup.add(types.InlineKeyboardButton(text='punkt_two_first_setting', callback_data = 'to_sec_first_setting'))
+	markup.add(types.InlineKeyboardButton(text='finish', callback_data = 'finish'))
+	markup.add(types.InlineKeyboardButton(text='back', callback_data = 'back'))
 	
-	# global first_setting
-	first_setting = bot.send_message(message.chat.id, "Настройка №1", reply_markup = markup)
-	bot.register_next_step_handler(first_setting, sec_setting_list)
+	bot.edit_message_reply_markup(message.message.chat.id, message.message.message_id, "Настройка №2", reply_markup = markup)
+	@bot.callback_query_handler(func=lambda message: True)
+	def pre_setting_list(message):
+		settings_list(message)
 
+def setting_sec_list(message):
+	markup = types.InlineKeyboardMarkup()
+	markup.add(types.InlineKeyboardButton(text='return', callback_data = 'return'))
+	markup.add(types.InlineKeyboardButton(text='punkt_one_sec_setting', callback_data = 'punkt_one_sec_setting'))
+	markup.add(types.InlineKeyboardButton(text='punkt_two_sec_setting', callback_data = 'punkt_two_sec_setting'))
+	markup.add(types.InlineKeyboardButton(text='finish', callback_data = 'finish'))
+	markup.add(types.InlineKeyboardButton(text='back', callback_data = 'back'))
 
-@bot.callback_query_handler()
-def sec_setting_list(message):
-	print(message.data)
-# def sec_setting_list(message):
-# 	markup = types.InlineKeyboardMarkup()
-# 	switch_button1 = types.InlineKeyboardButton(text='2', callback_data = '1')
-# 	markup.add(switch_button1)
-# 	switch_button2 = types.InlineKeyboardButton(text='2', callback_data = '2')
-# 	markup.add(switch_button2)
-# 	switch_button3 = types.InlineKeyboardButton(text='2', callback_data = '3')
-# 	markup.add(switch_button3)
-# 	switch_button3 = types.InlineKeyboardButton(text='back', callback_data = 'back')
-# 	markup.add(switch_button3)
-# 	sec_setting = bot.send_message(message.chat.id, "Настройка №2", reply_markup = markup)
+	bot.edit_message_reply_markup(message.message.chat.id, message.message.message_id, "Настройка №3", reply_markup = markup)
+	@bot.callback_query_handler(func=lambda message: True)
+	def pre_setting_list(message):
+		settings_list(message)
 
-# 	markup = types.InlineKeyboardMarkup()
-# 	switch_button1 = types.InlineKeyboardButton(text='3', callback_data = '1')
-# 	markup.add(switch_button1)
-# 	switch_button2 = types.InlineKeyboardButton(text='3', callback_data = '2')
-# 	markup.add(switch_button2)
-# 	switch_button3 = types.InlineKeyboardButton(text='3', callback_data = '3')
-# 	markup.add(switch_button3)
-# 	switch_button_back = types.InlineKeyboardButton(text='back', callback_data = 'back')
-# 	markup.add(switch_button_back)
-# 	third_setting = bot.send_message(message.chat.id, "Настройка №3", reply_markup = markup)
-	
-# 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-# 	markup.add('Да', 'Нет')
-# 	end_settings = bot.send_message(message.chat.id, "Вы закночили?", reply_markup = markup)
-	# bot.register_next_step_handler(end_settings, finish_reg)
+def setting_finish(message):
+	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+	markup.add('Да', 'Нет')
 
-# def finish_reg(message):
-	# print(first_setting)
-
+	end_settings = bot.send_message(message.from_user.id, "Вы закночили?", reply_markup = markup)
+	bot.register_next_step_handler(end_settings, finish_reg)
 
 def sign(message):
 	bot.send_message(message.chat.id, 'Вход пожилой!', reply_markup = types.ReplyKeyboardRemove(selective=False))
+
+			
