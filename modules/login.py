@@ -13,14 +13,15 @@ def login_response_begin(message, bot_old, settings_old):
 		
 def login_response(message):
 
-	gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
-	input_data = gpg.gen_key_input(
-	    passphrase=message.text,
-		name_real=message.chat.username)
-	key = gpg.gen_key(input_data)
-	key = key.fingerprint
+	# gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
+	# input_data = gpg.gen_key_input(
+	#     passphrase=message.text,
+	# 	name_real=message.chat.username)
+	# key = gpg.gen_key(input_data)
+	# key = key.fingerprint
+	key = 'test_key'
 
-	data = ((message.chat.username, key, settings))
+	data = ((str(message.from_user.id), key, settings))
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
 	query = "INSERT INTO Users VALUES (?, ?, ?)"
@@ -28,7 +29,7 @@ def login_response(message):
 	conn.commit()
 	conn.close()
 
-	os.mkdir('/home/sepezho/Documents/seppass/Users_folder/' + message.chat.username)
+	os.mkdir('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id))
 	bot.send_message(message.chat.id, 'Пароль зашифрован и сохранен в БД. Так же создана папка, где ваш никнейм выступил в качестве названия.\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key))
 	# settings_begin(message)
 	

@@ -22,7 +22,7 @@ def start_response(message):
 def login_begin(message):
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
-	query = "SELECT COUNT(*) FROM Users WHERE Username = 'sepezho'"
+	query = "SELECT COUNT(*) FROM Users WHERE User_id = '"+str(message.from_user.id)+"'"
 	c.execute(query)
 	answer = c.fetchone()
 	conn.commit()
