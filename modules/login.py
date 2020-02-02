@@ -15,8 +15,8 @@ def login_response(message):
 
 	# gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
 	# input_data = gpg.gen_key_input(
-	#     passphrase=message.text,
-	# 	name_real=message.chat.username)
+		# passphrase=message.text,
+		# name_real= str(message.from_user.id))
 	# key = gpg.gen_key(input_data)
 	# key = key.fingerprint
 	key = 'test_key'

@@ -90,7 +90,7 @@ def setting_store_keys(message):
 	def pre_setting_list(message):
 		settings_list(message)
 
-def setting_store_keys(message):
+def setting_store_pass(message):
 	markup = types.InlineKeyboardMarkup()
 	markup.add(types.InlineKeyboardButton(text='Вернуться', callback_data = 'return'))
 	markup.add(types.InlineKeyboardButton(text='На сервере (в бд/файликом)', callback_data = 'pass_on_serv'))
