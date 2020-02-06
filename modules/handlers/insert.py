@@ -1,6 +1,6 @@
 import os
 import gnupg
-def insert_main(message, bot_old, password):
+def insert_main(message, bot_old):
 	global bot
 	bot = bot_old
 	command = message.text.split()

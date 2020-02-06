@@ -1,10 +1,8 @@
 import gnupg
 import os
 def cat_main(message, bot_old, password):
-	global bot
 	bot = bot_old
 	command = message.text.split()
-	global name
 	name = command[1]
 	if len(command) == 2:
 		if os.path.isfile('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name+'.gpg'):
