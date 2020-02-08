@@ -1,35 +1,100 @@
 import os
-def ls_main(message, bot_old):
-	global bot
-	bot = bot_old
+
+def ls_main(message, bot):
 	resp = 'user_'+str(message.from_user.id) + '\n'
-	for root, dirs, files in os.walk('Users_folder/user_'+str(message.from_user.id), topdown=True):
-		i = 0
-		for name in dirs:
-			line = '│    '*(len(os.path.join(root, name).split('/'))-3)
-			i = i+1
-			if len(dirs) == i:
-				resp = resp + line + '└──' + os.path.join(name) +'\n'
-				stick = ''
-			else:
-				resp = resp + line +'├──' + os.path.join(name) +'\n'
-				stick = '│'
-			j = 0
-			for file in os.listdir(os.path.join(root, name)):
-				j = j+1
-				print(len(os.listdir(os.path.join(root, name))))
-				if len(os.listdir(os.path.join(root, name))) == j:
-					if file.endswith(".gpg"):
-						resp = resp + line + stick + '    └──' + file +'\n'
-				else:
-					if file.endswith(".gpg"):
-						resp = resp + line + stick + '    ├──' + file +'\n'
-	print(resp)
+	true_root = 'Users_folder/user_'+str(message.from_user.id)
+	dirsA = []
+	for root, dirs, files in os.walk(true_root):
+		# for name in dirs:
+		# 	dirsA.append(os.path.join(root, name))
+		for file in files:
+			dirsA.append(os.path.join(root, file))
+			
+	# dirsA.append('Users_folder/user_'+str(message.from_user.id))
+	dirs = sorted(dirsA)
+	print(dirs)
+	# i = 0
+	# for name in dirs:
+	# 	line = ''
+	# 	i = i+1
+	# 	if len(os.listdir(name)) == i:
+	# 		resp = resp + line + '└──' + name.split('/')[-1] +'\n'
+	# 		line = line + '    '
+	# 	else:
+	# 		resp = resp + line +'├──' + name.split('/')[-1] +'\n'
+	# 		line = line + '|  '
+	# 	j = 0
+	# 	for file in os.listdir(name):
+	# 		j = j+1
+	# 		if len(os.listdir(name)) == j:
+	# 			if file.endswith(".gpg"):
+	# 				resp = resp + line + '   └──' + file +'\n'
+	# 		else:
+	# 			if file.endswith(".gpg"):
+	# 				resp = resp + line + '   ├──' + file +'\n'
+	print('------------------------\n'+resp+'\n------------------------\n')
 	bot.send_message(message.chat.id, resp)
 
 
 
+# ----------------
 
+# def line(root, name, true_root):
+# 	way = os.path.join(root, name).split('/')
+# 	way = way[2:][::-1]
+# 	line = ''
+# 	i=0
+# 	for folder in way:
+# 		i = i+1
+# 		depth_path = os.path.join(true_root, '/'.join(way[::-1][:-i]))
+# 		listdir = os.listdir(depth_path)
+# 		num = listdir.index(folder)
+# 		if len(os.listdir(depth_path)) == num:
+# 			line = line + '   '
+# 		else:
+# 			line = line + '|  '
+# 	return line
+
+			# # line = ''
+			# i = i+1
+			# if len(dirs) == i:
+			# 	resp = resp + line(root, name, true_root) + '└──' + os.path.join(name) +'\n'
+			# 	# line = line + '    '
+			# else:
+			# 	resp = resp + line(root, name, true_root) +'├──' + os.path.join(name) +'\n'
+			# 	# line = line + '|  '
+			# j = 0
+			# for file in os.listdir(os.path.join(root, name)):
+			# 	j = j+1
+			
+			# 	if len(os.listdir(os.path.join(root, name))) == j:
+			# 		if file.endswith(".gpg"):
+			# 			resp = resp + line(root, name, true_root) + '   └──' + file +'\n'
+			# 	else:
+			# 		if file.endswith(".gpg"):
+			# 			resp = resp + line(root, name, true_root) + '   ├──' + file +'\n'
+# ----------------
+			# line = ''
+			# i = i+1
+			# if len(dirs) == i:
+			# 	resp = resp + line + '└──' + os.path.join(name) +'\n'
+			# 	line = line + '    '
+			# else:
+			# 	resp = resp + line +'├──' + os.path.join(name) +'\n'
+			# 	line = line + '|  '
+			# j = 0
+			# for file in os.listdir(os.path.join(root, name)):
+			# 	j = j+1
+			
+			# 	if len(os.listdir(os.path.join(root, name))) == j:
+			# 		if file.endswith(".gpg"):
+			# 			resp = resp + line + '   └──' + file +'\n'
+			# 	else:
+			# 		if file.endswith(".gpg"):
+			# 			resp = resp + line + '   ├──' + file +'\n'
+
+
+# ----------------
 	# src = 'Users_folder/user_'+str(message.from_user.id)
 
 	# line = '├──'
