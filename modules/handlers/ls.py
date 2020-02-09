@@ -71,8 +71,8 @@ def line(way, root_folder):
 		num = listdir.index(folder)
 		if len(listdir) == num+1:
 			# если эта папка последняя, то заносим пустой отступ
-			line = '     '+line
+			line = '      '+line
 		else:
 			# если эта папка не последняя, то заносим черту
-			line = '│    '+line
+			line = '│     '+line
 	return line
