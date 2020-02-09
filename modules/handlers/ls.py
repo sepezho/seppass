@@ -1,20 +1,141 @@
 import os
+import json 
 
 def ls_main(message, bot):
-	resp = 'user_'+str(message.from_user.id) + '\n'
+	# resp = 'user_'+str(message.from_user.id) + '\n'
 	true_root = 'Users_folder/user_'+str(message.from_user.id)
-	dirsA = []
+	# global roots
+	# roots = '{}'
+	# 'user_'+str(message.from_user.id) + '\n'
+	resp = []
 	for root, dirs, files in os.walk(true_root):
-		# for name in dirs:
-		# 	dirsA.append(os.path.join(root, name))
-		for file in files:
-			dirsA.append(os.path.join(root, file))
-			
-	# dirsA.append('Users_folder/user_'+str(message.from_user.id))
-	dirs = sorted(dirsA)
-	print(dirs)
-	# i = 0
+		for name in dirs:
+			resp.append(root+ '/' +name)
+			for file in os.listdir(os.path.join(root, name)):
+				if file.endswith(".gpg"):
+					resp.append(root+ '/' +name + '/' +file)
+	resp = sorted(resp)
+	print(resp)
+	for data in resp:
+		# if not data.endswith('.gpg'):
+		print(data)
+		ls = os.listdir('/'.join(data.split('/')[:-1]))
+		index = ls.index(''.join(data.split('/')[-1]))
+		print(ls)
+		print(index)
+		if len(ls) == index + 1:
+			index_data = resp.index(data)
+			resp[index_data] =  '└──'+''.join(data.split('/')[-1]) 
+		else:
+			index_data = resp.index(data)
+			resp[index_data] =  '├──'+''.join(data.split('/')[-1]) 
+	response = ''
+	for data in resp:
+		response += data+'\n'
+
+	print('------------------------\n'+str(response)+'\n------------------------\n')
+	bot.send_message(message.chat.id, response)
+			# pre_create_json(os.path.join(root, name))
+
+		# roots = []
+		# roots.append(true_root)
+			# -----------
+			# rootsA = json.loads(roots)
+			# data_for_folder = os.listdir(os.path.join(root, name))
+			# rootsA[root+'/'+name] = []
+			# for data in data_for_folder:
+			# 	if not data.endswith('gpg'):
+
+			# 		rootsA[root+'/'+name].append(root+'/'+name+'/'+data)
+			# 	else:
+			# 		rootsA[root+'/'+name].append(data)
+
+			# roots = json.dumps(rootsA)
+			# ------------
+			# root_for_name = '/'.join(os.path.join(root, name).split('/')[:-1])
+			# print(root_for_name)				
+			# print(roots)				
+			# roots.index(root_for_name)
+			# is_exist = False
+
+			# for n in roots:
+			# 	if n == root_for_name:
+			# 		is_exist = True
+
+			# if is_exist:
+			# 	print('exist')
+			# else:
+			# 	print('dont exist')
+			# 	roots.append(root_for_name)
+
+# def pre_create_json(src):
+# 	global roots
+# 	rootsA = json.loads(roots)
+# 	rootsA[src] = []
+# 	rootsb = create_json(src, rootsA)
+# 	roots = json.dumps(rootsb)
+
+# def create_json(src, rootsA):
+# 	# global roots
+# 	print('1\n')
+# 	# rootsA = json.loads(roots)
+# 	data_for_folder = os.listdir(src)
+# 	for data in data_for_folder:
+# 		if not data.endswith('gpg'):
+# 			sd = src+'/'+data
+# 			rootsA[src].append(sd)
+# 			z = create_json(os.path.join(src, data), rootsA)
+# 			rootsA[src][sd].append(z)
+# 		else:
+# 			print(data)
+# 			rootsA[src].append(data)
+# 	return rootsA
+	# roots = json.dumps(rootsA)
+
+			# dirsA.append(os.path.join(root, name))
+		# for file in files:
+		# 	if file.endswith(".gpg"):
+		# 		dirsA.append(os.path.join(root, file))
+
+
+# _______________________________
+	# # dirsA.append('Users_folder/user_'+str(message.from_user.id))
+	# dirs = sorted(dirsA)
+	# print(dirs)
+	# # i = 0
+	# arr = []
+	# name_old = dirs[0]
+	# z = True
+	# old_path = ''
 	# for name in dirs:
+	# 	for path in name:
+	# 		if not path.endswith(".gpg"):
+	# 			if old_path = path:
+	# 				# name_arr = name.split('/')[2:]
+	# 				resp += '----------------\n' + path + '\n'
+	# 			else:
+
+	# 	# name_old = name
+	# 	# name_arr = name.split('/')[2:]
+	# 	# name_old_arr = name_old.split('/')[2:]
+	# 	# arr.append(name_arr)
+	# 	# print(name)
+	# 	index = dirs.index(name)
+	# 	while z:
+	# 		name_arr = dirs[index+1].split('/')[2:]
+	# 		name_old_arr = dirs[index].split('/')[2:]
+	# 		print(name_arr)
+	# 		print(name_old_arr)
+	# 		index += 1
+	# 		if name_arr[0] == name_old_arr[0]:
+	# 			resp += '----------------\n' + str(name_arr[0]) + '\n'
+	# 		else:
+	# 			z = False
+	# 		# resp += str(name_arr[-1]) + '\n'
+	# 		resp += str(name_old_arr[-1]) + '\n'
+	# 	# for folder in name_arr[:-1]
+# _______________________________
+
 	# 	line = ''
 	# 	i = i+1
 	# 	if len(os.listdir(name)) == i:
@@ -32,8 +153,6 @@ def ls_main(message, bot):
 	# 		else:
 	# 			if file.endswith(".gpg"):
 	# 				resp = resp + line + '   ├──' + file +'\n'
-	print('------------------------\n'+resp+'\n------------------------\n')
-	bot.send_message(message.chat.id, resp)
 
 
 
@@ -64,7 +183,7 @@ def ls_main(message, bot):
 			# 	resp = resp + line(root, name, true_root) +'├──' + os.path.join(name) +'\n'
 			# 	# line = line + '|  '
 			# j = 0
-			# for file in os.listdir(os.path.join(root, name)):
+			# for file in os.listdir(os.path.join(root, name)):where
 			# 	j = j+1
 			
 			# 	if len(os.listdir(os.path.join(root, name))) == j:
