@@ -4,37 +4,90 @@ import json
 def ls_main(message, bot):
 	# resp = 'user_'+str(message.from_user.id) + '\n'
 	true_root = 'Users_folder/user_'+str(message.from_user.id)
-	# global roots
-	# roots = '{}'
-	# 'user_'+str(message.from_user.id) + '\n'
 	resp = []
 	for root, dirs, files in os.walk(true_root):
 		for name in dirs:
 			resp.append(root+ '/' +name)
-			for file in os.listdir(os.path.join(root, name)):
+			for file in sorted(os.listdir(os.path.join(root, name))):
 				if file.endswith(".gpg"):
 					resp.append(root+ '/' +name + '/' +file)
+	# print(resp)
 	resp = sorted(resp)
-	print(resp)
 	for data in resp:
 		# if not data.endswith('.gpg'):
-		print(data)
-		ls = os.listdir('/'.join(data.split('/')[:-1]))
+		# print(data)
+		ls = sorted(os.listdir('/'.join(data.split('/')[:-1])))
 		index = ls.index(''.join(data.split('/')[-1]))
-		print(ls)
-		print(index)
+		# print(ls)
+		# print(index)
 		if len(ls) == index + 1:
 			index_data = resp.index(data)
-			resp[index_data] =  '└──'+''.join(data.split('/')[-1]) 
+			resp[index_data] =  line(data , true_root)+'└── '+''.join(data.split('/')[-1]) 
 		else:
 			index_data = resp.index(data)
-			resp[index_data] =  '├──'+''.join(data.split('/')[-1]) 
+			resp[index_data] =  line(data, true_root)+'├── '+''.join(data.split('/')[-1]) 
 	response = ''
 	for data in resp:
-		response += data+'\n'
-
+		response += data[4:]+'\n'
 	print('------------------------\n'+str(response)+'\n------------------------\n')
 	bot.send_message(message.chat.id, response)
+
+
+def line(src, true_root):
+	way = src.split('/')
+	way = way[2:][::-1]
+	print(way)
+	line = ''
+	i=0
+	for folder in way:
+		i = i+1
+		depth_path = os.path.join(true_root, '/'.join(way[::-1][:-i]))
+		print(depth_path)
+		listdir = sorted(os.listdir(depth_path))
+		num = listdir.index(folder)
+		if len(listdir) == num+1:
+			line = line+'    '
+		else:
+			line = line+'│   '
+	print(line+'\n------------')
+	return line
+
+
+   # ├── server
+   # │   ├── git.gpg
+   # │   ├── gitea.gpg
+   # │   ├── sockduser.gpg
+   # │   ├── admin.gpg
+   # │   ├── root.gpg
+   # │   └── zdvzds
+   # │       ├── s.gpg
+   # │       └── fold
+   # │           └── asd.gpg
+   # ├── games
+   # │   ├── battleNet.gpg
+   # │   ├── playStationNetwork.gpg
+   # │   └── steam.gpg
+   # ├── gitHub
+   # │   ├── codes.gpg
+   # │   └── gitHubPass.gpg
+   # ├── mails
+   # │   ├── PassAppServSepez.gpg
+   # │   ├── sepezho.gpg
+   # │   └── koko2kocit.gpg
+   # ├── socialMedias
+   # │   ├── vk.gpg
+   # │   ├── stackOverflow.gpg
+   # │   └── sounCloud.gpg
+   # └── other
+   #     ├── aliexpress.gpg
+   #     ├── trello.gpg
+   #     ├── Habr.gpg
+   #     ├── codewars.gpg
+   #     ├── freelanceH.gpg
+   #     └── hh.gpg
+
+
+
 			# pre_create_json(os.path.join(root, name))
 
 		# roots = []
