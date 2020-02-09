@@ -1,42 +1,78 @@
 import os
 
+# очень напряжный код, по этому я его продпишу
+
 def ls_main(message, bot):
+	# папка юзера
 	root_folder = 'Users_folder/user_'+str(message.from_user.id)
 	response_arr = []
+	# перебираем все папки в root
 	for root, dirs, files in os.walk(root_folder):
 		for dir_ in dirs:
+			# заносим путь каждой папки в массив, для дальнейшей работы с ними
 			response_arr.append(root+ '/' +dir_)
-			for file in sorted(os.listdir(os.path.join(root, dir_))):
+			# перебираем все файлы в данной папке, и заносим в тот же массив
+			for file in sorted(os.listdir(root+ '/' +dir_)):
 				if file.endswith(".gpg"):
 					response_arr.append(root+ '/' +dir_ + '/' +file)
+	# сортируем массив 
 	response_arr = sorted(response_arr)
+	# перебор каждого файла/папки в массиве
 	for file in response_arr:
+		# путь к файлу/папке парсим по знаку "/" удаляем последний элемент(это название файла) и соеденяем обратно, так мы получаем путь к файлу/папке.
+		# после мы просматриваем все другие файлы/папки в папке с файлом, и полученный массив сортируем	
 		ls = sorted(os.listdir('/'.join(file.split('/')[:-1])))
+		# мы находим номер в массиве для данного файла/папки
 		index = ls.index(''.join(file.split('/')[-1]))
+		# заменяем пункт в главном массиве на конечную строчку
+		# для этого берем индекс записи в массиве
+		index_file = response_arr.index(file)
+		# вводим переменную для последнего символа в строке, где если файл/папка последняя, то он становится '└── '
+		last_symbol = '├── '
+		# если даннаый файл/папка последняя в массиве, то мы переходим
 		if len(ls) == index + 1:
-			index_file = response_arr.index(file)
-			response_arr[index_file] =  line(file , root_folder)+'└── '+''.join(file.split('/')[-1]) 
-		else:
-			index_file = response_arr.index(file)
-			response_arr[index_file] =  line(file, root_folder)+'├── '+''.join(file.split('/')[-1]) 
+			# сюда
+			last_symbol = '└── '
+		# а потом заменям пункт в главном массиве на запись, в которой количество отступов и палочек '│   ' считается в отдельной функции (см ниже).
+		# добавляем к этой записе знак '└── ' (или '├── ') и добавляем название файла/папки, распарсив запись в массив по знаку "/" , и вытащив из него последнюю запись 
+		response_arr[index_file] =  line(file, root_folder)+last_symbol+''.join(file.split('/')[-1])
+	# после мы формируем окончательную запись, для вывода сообщением
 	response_text = '---------------------------------------------------------------\n\n'+'user_'+str(message.from_user.id) + '\n'
+	# парсим массив и переносим все в сообщение
 	for response_arr_text in response_arr:
 		response_text += response_arr_text+'\n'
 	response_text += '\n---------------------------------------------------------------'
+	# отправляем сообщение пользователю	
 	bot.send_message(message.chat.id, response_text)
 
+# та функция, о которой я упомянул выше.
+# определяет "глубину" записи, и проставляет палочки или отступы
+# принемает путь к файлу и путь к root дериктории полльзователя
 def line(way, root_folder):
+	# парсит путь к записи по знаку "/"
 	way = way.split('/')
+	# отрезает первые 2 пункта (которые есть равны root_folder)
+	# затем отрезаем последний пункт, который равен названию самой записи/папке
+	# потом реверсим массив, для удобной обработки
 	way = way[2:][:-1][::-1]
+	# переменная, куда занесутся все линии и отступы
 	line = ''
+	# переменная, для счета "глубины"
 	i=0
+	# обрабатываем каждый "кусочек" от пути до файла 
 	for folder in way:
 		i = i+1
-		depth_path = os.path.join(root_folder, '/'.join(way[::-1][:-i]))
+		# снова реверсим way и срезаем последнюю запись из пассива, так мы поднимаемся на уровень выше
+		# после собираем все в строку, и получаем путь до родительской папки, на разной высоте(зависит от i)
+		depth_path = root_folder+'/'+'/'.join(way[::-1][:-i])
+		# просматриваем деррикторию родителя, и полученный массив сортируем
 		listdir = sorted(os.listdir(depth_path))
+		# находим номер папки в массиве
 		num = listdir.index(folder)
 		if len(listdir) == num+1:
-			line = '    '+line
+			# если эта папка последняя, то заносим пустой отступ
+			line = '     '+line
 		else:
-			line = '│   '+line
+			# если эта папка не последняя, то заносим черту
+			line = '│    '+line
 	return line
