@@ -1,7 +1,6 @@
 import gnupg
 import os
-def cat_main(message, bot_old, password):
-	bot = bot_old
+def cat_main(message, bot, password):
 	command = message.text.split()
 	name = command[1]
 	if len(command) == 2:

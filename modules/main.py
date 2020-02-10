@@ -6,6 +6,7 @@ sys.path.append('./modules/handlers')
 from insert import insert_main
 from cat import cat_main
 from ls import ls_main
+from rm import rm_main
 
 def main(message, bot_old):
 	global bot
@@ -46,12 +47,13 @@ def main_handlers(message):
 	@bot.message_handler(commands=['ls'])
 	def ls_func_in_main(message):
 		ls_main(message, bot)
-	
+	@bot.message_handler(commands=['rm'])
+	def rm_func_in_main(message):
+		rm_main(message, bot)
+
 	# @bot.message_handler(commands=['generate'])
 	# def message_handler_auth_main(message):
 	# @bot.message_handler(commands=['edit'])
-	# def message_handler_auth_main(message):
-	# @bot.message_handler(commands=['rm'])
 	# def message_handler_auth_main(message):
 	# @bot.message_handler(commands=['mv'])
 	# def message_handler_auth_main(message):
