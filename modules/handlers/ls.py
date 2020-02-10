@@ -3,6 +3,7 @@ import os
 # очень напряжный код, по этому я его подпишу
 
 def ls_main(message, bot):
+	print(message)
 	# папка юзера
 	root_folder = 'Users_folder/user_'+str(message.from_user.id)
 	response_arr = []

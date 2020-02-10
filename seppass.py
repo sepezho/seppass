@@ -4,6 +4,7 @@ from telebot import types
 
 sys.path.append('./modules')
 from auth import auth_main
+
 url = "socks5://sockduser:f2%kE%.)as!S@46.101.118.222:6666"
 telebot.apihelper.proxy = {
 	'http': url,
