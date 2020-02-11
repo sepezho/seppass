@@ -23,7 +23,7 @@ def finish_login(message):
 	data = ((str(message.from_user.id), key, str(settings)))
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
-	query = "INSERT INTO Users VALUES (?, ?, ?)"
+	query = "touch INTO Users VALUES (?, ?, ?)"
 	c.execute(query, data)
 	conn.commit()
 	conn.close()

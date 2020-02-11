@@ -430,9 +430,9 @@
 	# else:
 		# bot.send_message(message.chat.id, 'Ошибка')
 
-	# @bot.message_handler(commands=['insert'])
-	# def insert_func_in_main(message):
-	# 	insert_main(message, bot)
+	# @bot.message_handler(commands=['touch'])
+	# def touch_func_in_main(message):
+	# 	touch_main(message, bot)
 
 
 # --------------main

@@ -3,7 +3,7 @@ import json
 import sys
 
 sys.path.append('./modules/handlers')
-from insert import insert_main
+from touch import touch_main
 from cat import cat_main
 from ls import ls_main
 from rm import rm_main
@@ -38,9 +38,9 @@ def sign_response(message):
 
 def main_handlers(message):
 	bot.send_message(message.chat.id, 'Вы подтвердили что это вы.')
-	@bot.message_handler(commands=['insert'])
-	def insert_func_in_main(message):
-		insert_main(message, bot)
+	@bot.message_handler(commands=['touch'])
+	def touch_func_in_main(message):
+		touch_main(message, bot)
 	@bot.message_handler(commands=['cat'])
 	def cat_func_in_main(message):
 		cat_main(message, bot, password)
