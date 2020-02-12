@@ -13,7 +13,6 @@ def touch_main(message, bot_old):
 			bot.send_message(message.chat.id, 'Такая запись уже существует.')
 		else:
 			part = name.split('/')
-			print(len(part))
 			if len(part) < 9:
 				msg = bot.send_message(message.chat.id,'Отправте свою запись (не бойтесь, за ее сохранность, я ее удалю из ваших сообщений).')
 				try:
@@ -24,7 +23,7 @@ def touch_main(message, bot_old):
 				bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 	else:
 		bot.send_message(message.chat.id,'Используйте правильный синтаксис: /touch папка/имя_записи')
-		return
+		
 def touch_pass_query(message):
 	val_old = '/'
 	part = name.split('/')

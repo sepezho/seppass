@@ -4,6 +4,7 @@ import sys
 
 sys.path.append('./modules/handlers')
 from touch import touch_main
+from mkd import mkd_main
 from cat import cat_main
 from ls import ls_main
 from rm import rm_main
@@ -41,6 +42,9 @@ def main_handlers(message):
 	@bot.message_handler(commands=['touch'])
 	def touch_func_in_main(message):
 		touch_main(message, bot)
+	@bot.message_handler(commands=['mkd'])
+	def mkd_handler_auth_main(message):
+		mkd_main(message, bot)
 	@bot.message_handler(commands=['cat'])
 	def cat_func_in_main(message):
 		cat_main(message, bot, password)
@@ -50,7 +54,6 @@ def main_handlers(message):
 	@bot.message_handler(commands=['rm'])
 	def rm_func_in_main(message):
 		rm_main(message, bot)
-
 	# @bot.message_handler(commands=['generate'])
 	# def message_handler_auth_main(message):
 	# @bot.message_handler(commands=['edit'])
