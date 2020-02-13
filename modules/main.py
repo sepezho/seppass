@@ -8,6 +8,7 @@ from mkd import mkd_main
 from cat import cat_main
 from ls import ls_main
 from rm import rm_main
+from gen import gen_main
 
 def main(message, bot_old):
 	global bot
@@ -54,12 +55,18 @@ def main_handlers(message):
 	@bot.message_handler(commands=['rm'])
 	def rm_func_in_main(message):
 		rm_main(message, bot)
-
+	@bot.message_handler(commands=['gen'])
+	def gen_handler_auth_main(message):
+		gen_main(message, bot)
+	
 	@bot.message_handler(func=lambda message: True, content_types=['text'])
 	def error(message):
-		# if message.text[0] != '/':
-		bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
-	# @bot.message_handler(commands=['generate'])
+		if message.text[0] != '/':
+			bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
+		else:
+			bot.send_message(message.chat.id,'Функции '+message.text+' не существует. Используй /help.')
+
+	# @bot.message_handler(commands=['gen'])
 	# def message_handler_auth_main(message):
 	# @bot.message_handler(commands=['edit'])
 	# def message_handler_auth_main(message):

@@ -13,7 +13,6 @@ telebot.apihelper.proxy = {
 
 bot = telebot.TeleBot("1028700604:AAHqqv3JQSvkmUubsjS442EFpUMUULKmPYg")
 
-
 @bot.message_handler(commands=['start'])
 def message_handler_start_main(message):
 	bot.send_message(message.chat.id,
@@ -21,41 +20,25 @@ def message_handler_start_main(message):
 		' GPG ключем, пароль от которого знаете только вы (конечно если выбрали пункт "хранить пароль у себя" в настройках).'+
 		'\n\nИспользуйте /auth, чтобы войти в акк, или создать его. Используйте команду /help, если растерялись.\n\nУдачи.'
 		)
-# def a(z):
-# 	if z:
-# 		@bot.message_handler(func=lambda message: True, content_types=['text'])
-# 		def error(message):
-# 			# if message.text[0] != '/':
-# 			bot.send_message(message.chat.id,'1111 /help.')
-# 		return
-# 	else:
-# 		return
-# is_auth = False
-# @bot.message_handler(commands=['auth'])
-# def message_handler_auth_main(message, is_auth = is_auth):
-# 	is_auth = auth_main(message, bot)
-# 	print(is_auth)
 
 @bot.message_handler(commands=['auth'])
 def message_handler_auth_main(message):
 	auth_main(message, bot)
-	a(False)
-a(True)
 
 @bot.message_handler(commands=['help'])
 def message_handler_auth_main(message):
 	bot.send_message(message.chat.id,
 	'Команды и их описание, которые может выполнять этот бот.\n\n'+
-	'╠══════════════════════════════════╣\n'+
+	'╠═══════════════════════════════╣\n'+
 	'  Команды, доступные без авторизации:\n'+
-	'╠══════════════════════════════════╣\n\n'+
+	'╠═══════════════════════════════╣\n\n'+
 	'/start - Приветствие, и небольшое описание возможностей бота.\n\n'+
 	'/auth - Авторизация пользователя, для дальнейшей работы.\n\n'+
 	'/about - О разработчике.\n\n'+
 	'/help - Очень трудно догадаться (выводит это сообщение).\n\n'+
-	'╠══════════════════════════════════╣\n'+
+	'╠═══════════════════════════════╣\n'+
 	'  Команды, доступные после авторизации:\n'+
-	'╠══════════════════════════════════╣\n\n'+
+	'╠═══════════════════════════════╣\n\n'+
 	'/ls - Просмотр списка шифрованых записей. Используйте так: /ls папка/папка (или просто /ls)\n\n'+
 	'/cat - Просмотр записи, но нужно ввести пароль, чтоб ее расшифровать.\nИспользуется так: /cat папка/имя_записи (после ввода пароля (если надо) вам вернется запись, которую вы шифровали с именем "name")\n\n'+
 	'/touch - Создать новую запись, ввести ее сообщением.\nИспользуется так: /touch папка/имя_записи. После введите запись.\n\n'+
@@ -82,39 +65,5 @@ def message_handler_auth_main(message):
 		'Have a nice day\n'+
 		'════════╣ Created by SEPEZHO ╠════════\n',
 		reply_markup=markup)
-# if not is_auth:
-# 	@bot.message_handler(func=lambda message: True)
-# 	def error(message, is_auth = is_auth):
-# 		if (message.text[0] == '/') and (not is_auth):
-# 			arr = ['/ls','/cat','/touch','/mkd','/generate','/edit','/rm','/mv','/settings']
-# 			is_command = True
-# 			for command in arr:
-# 				if message.text.find(command) != -1:
-# 					is_command = False
-# 					bot.send_message(message.chat.id,'Тебе следует использовать /auth, для доступа к команде '+command+'.')
-# 					return
-# 			if is_command:
-# 				bot.send_message(message.chat.id,'Команды '+message.text+' не существует. Используй /help.')
-# 		else:
-# 			bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
-# @bot.message_handler(func=lambda message: True, content_types=['text'])
-
-
-
-# @bot.message_handler(commands=['touch'])
-# def touch_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /touch вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['mkd'])
-# def mkd_handler_auth_main(message):
-# 	bot.send_message(message.chat.id,'Команда /mkd вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['cat'])
-# def cat_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /cat вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['ls'])
-# def ls_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /ls вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['rm'])
-# def rm_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /rm вам пока не доступна. Пропишите /auth.')
 
 bot.polling()

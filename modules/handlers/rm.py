@@ -16,7 +16,7 @@ def rm_main(message, bot):
 			markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 			markup.add('Да, я уверен', 'Нет')
 			text = ls(file)
-			msg = bot.send_message(message.chat.id, 'Вы уверены, что хотите удалить папку '+name+' и все ее содержимое?'+ text, reply_markup = markup)
+			msg = bot.send_message(message.chat.id, 'Вы уверены, что хотите удалить папку '+name+' и все ее содержимое?\n'+ text, reply_markup = markup)
 			def finish_rm_folder(message):
 				if message.text == 'Да, я уверен':
 					shutil.rmtree(file)

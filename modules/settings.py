@@ -120,7 +120,8 @@ def setting_authentication(message):
 
 def setting_finish(chat_id):
 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-	markup.add('Да', 'Нет')
+	markup.add('Да')
+	markup.add('Нет')
 	end_settings = bot.send_message(chat_id, "Вы закночили?", reply_markup = markup)
 	bot.register_next_step_handler(end_settings, finish_reg)
 

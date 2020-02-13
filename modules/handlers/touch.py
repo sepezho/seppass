@@ -27,13 +27,10 @@ def touch_main(message, bot_old):
 def touch_pass_query(message):
 	val_old = '/'
 	part = name.split('/')
-	for val in part:
-		if val not in part[-1]:
-			val_old = val_old+val+'/'
-			if not os.path.exists(way + val_old):
-				os.mkdir(way + val_old)
+	if not os.path.isdir(way + '/' + '/'.join(part[:-1])):
+		os.makedirs(way + '/'+'/'.join(part[:-1]))
 	gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
-	encrypted_data = gpg.encrypt(message.text, str(message.from_user.id))
+	encrypted_data = gpg.encrypt(password, str(message.from_user.id))
 	with open(way + '/' + name + '.gpg', 'w') as f:
 		f.write(str(encrypted_data))
 	bot.send_message(message.chat.id,'Запись ' + name + ' добавлена.')
