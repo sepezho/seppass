@@ -13,21 +13,6 @@ telebot.apihelper.proxy = {
 
 bot = telebot.TeleBot("1028700604:AAHqqv3JQSvkmUubsjS442EFpUMUULKmPYg")
 
-# @bot.message_handler(commands=['touch'])
-# def touch_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /touch вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['mkd'])
-# def mkd_handler_auth_main(message):
-# 	bot.send_message(message.chat.id,'Команда /mkd вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['cat'])
-# def cat_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /cat вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['ls'])
-# def ls_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /ls вам пока не доступна. Пропишите /auth.')
-# @bot.message_handler(commands=['rm'])
-# def rm_func_in_main(message):
-# 	bot.send_message(message.chat.id,'Команда /rm вам пока не доступна. Пропишите /auth.')
 
 @bot.message_handler(commands=['start'])
 def message_handler_start_main(message):
@@ -36,14 +21,26 @@ def message_handler_start_main(message):
 		' GPG ключем, пароль от которого знаете только вы (конечно если выбрали пункт "хранить пароль у себя" в настройках).'+
 		'\n\nИспользуйте /auth, чтобы войти в акк, или создать его. Используйте команду /help, если растерялись.\n\nУдачи.'
 		)
+# def a(z):
+# 	if z:
+# 		@bot.message_handler(func=lambda message: True, content_types=['text'])
+# 		def error(message):
+# 			# if message.text[0] != '/':
+# 			bot.send_message(message.chat.id,'1111 /help.')
+# 		return
+# 	else:
+# 		return
 # is_auth = False
 # @bot.message_handler(commands=['auth'])
 # def message_handler_auth_main(message, is_auth = is_auth):
 # 	is_auth = auth_main(message, bot)
 # 	print(is_auth)
+
 @bot.message_handler(commands=['auth'])
 def message_handler_auth_main(message):
 	auth_main(message, bot)
+	a(False)
+a(True)
 
 @bot.message_handler(commands=['help'])
 def message_handler_auth_main(message):
@@ -101,8 +98,23 @@ def message_handler_auth_main(message):
 # 		else:
 # 			bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
 # @bot.message_handler(func=lambda message: True, content_types=['text'])
-# def error(message):
-# 	if message.text[0] != '/':
-# 		bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
+
+
+
+# @bot.message_handler(commands=['touch'])
+# def touch_func_in_main(message):
+# 	bot.send_message(message.chat.id,'Команда /touch вам пока не доступна. Пропишите /auth.')
+# @bot.message_handler(commands=['mkd'])
+# def mkd_handler_auth_main(message):
+# 	bot.send_message(message.chat.id,'Команда /mkd вам пока не доступна. Пропишите /auth.')
+# @bot.message_handler(commands=['cat'])
+# def cat_func_in_main(message):
+# 	bot.send_message(message.chat.id,'Команда /cat вам пока не доступна. Пропишите /auth.')
+# @bot.message_handler(commands=['ls'])
+# def ls_func_in_main(message):
+# 	bot.send_message(message.chat.id,'Команда /ls вам пока не доступна. Пропишите /auth.')
+# @bot.message_handler(commands=['rm'])
+# def rm_func_in_main(message):
+# 	bot.send_message(message.chat.id,'Команда /rm вам пока не доступна. Пропишите /auth.')
 
 bot.polling()
