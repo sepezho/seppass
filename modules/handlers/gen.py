@@ -64,7 +64,10 @@ def gen_pass_query(password, user_id):
 	part = name.split('/')
 	if not os.path.isdir(way + '/' + '/'.join(part[:-1])):
 		os.makedirs(way + '/'+'/'.join(part[:-1]))
-	gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
-	encrypted_data = gpg.encrypt(password, user_id)
-	with open(way + '/' + name + '.gpg', 'w') as f:
-		f.write(str(encrypted_data))
+	gpg = gnupg.GPG()
+	gpg.encrypt(
+        password,
+        # recipients=['user_'+user_id],
+        recipients='sepezho',
+        output=way + '/' + name + '.gpg',
+    )
