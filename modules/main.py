@@ -9,6 +9,7 @@ from cat import cat_main
 from ls import ls_main
 from rm import rm_main
 from gen import gen_main
+from edit import edit_main
 
 def main(message, bot_old):
 	global bot
@@ -58,7 +59,10 @@ def main_handlers(message):
 	@bot.message_handler(commands=['gen'])
 	def gen_handler_auth_main(message):
 		gen_main(message, bot)
-	
+	@bot.message_handler(commands=['edit'])
+	def edit_handler_auth_main(message):
+		edit_main(message, bot)
+		
 	@bot.message_handler(func=lambda message: True, content_types=['text'])
 	def error(message):
 		if message.text[0] != '/':
@@ -66,10 +70,6 @@ def main_handlers(message):
 		else:
 			bot.send_message(message.chat.id,'Функции '+message.text+' не существует. Используй /help.')
 
-	# @bot.message_handler(commands=['gen'])
-	# def message_handler_auth_main(message):
-	# @bot.message_handler(commands=['edit'])
-	# def message_handler_auth_main(message):
 	# @bot.message_handler(commands=['mv'])
 	# def message_handler_auth_main(message):
 	# @bot.message_handler(commands=['settings'])

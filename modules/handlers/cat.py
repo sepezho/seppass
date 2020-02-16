@@ -15,4 +15,3 @@ def cat_main(message, bot, password):
 			bot.send_message(message.chat.id, 'Такой записи не существует.')
 	else:
 		bot.send_message(message.chat.id,'Используйте правильный синтаксис: /cat папка/имя_записи')
-		return

@@ -1,3 +1,58 @@
+
+
+
+# print('======')
+
+# gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
+# try:
+# 	keys = gpg.list_keys()
+# 	key = gpg.search_keys('sepezho')
+# 	print(keys)
+# 	print('======')
+# 	print(key)
+# except TypeError as e:
+# 	logger.error(msg='GNUPG TypeError: ' + str(e))
+
+# print('======')
+
+# def pgp_encrypt_file(data):
+# 	gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
+
+# 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
+# 	c = conn.cursor()
+# 	# query = "SELECT Key FROM Users WHERE User_id = '"+str(message.from_user.id)+"'"
+# 	query = "SELECT Key FROM Users WHERE User_id = '"+str(707939820)+"'"
+# 	key_fingerprint = c.execute(query).fetchall()[0][0]
+# 	key_src = '/home/sepezho/.gnupg/openpgp-revocs.d/' + key_fingerprint + '.rev'
+
+# 	try:
+# 		with open(key_src) as file:
+# 			key_data = file.read()
+# 		print(key_data)
+# 		print('=======')
+# 		import_result = gpg.import_keys(key_data)
+# 		print('Public key imported: {}'.format(key_fingerprint))
+# 		public_keys = gpg.list_keys()
+# 		fingerprint = public_keys[0]['fingerprint']
+
+# 		# print('Attempting to encrypt file: ' + 'output_full_filepath')
+# 		# with open(filepath, 'r') as f:
+# 		# 	newfile = f.read()
+# 		# newfile = 'output_full_filepath'
+# 		status = gpg.decrypt(str(data), passphrase='EykNOfw5rkC{')
+
+# 		print('status.ok : ' + str(status.ok))
+# 		print('status.status : ' + str(status.status))
+# 		print('asdads : ' + str(status))
+
+# 	except FileNotFoundError as e:
+# 		logger.error(msg='File not found: ' + str(e))
+# 	except TypeError as e:
+# 		print('GNUPG TypeError: ' + str(e))
+
+
+# pgp_encrypt_file(dataa)
+
 # -----------------------------------------------LSLSLSSLSLSLSLSLSL
 
    # ├── server
