@@ -12,6 +12,7 @@ from rm import rm_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
+import settings
 
 def main(message, bot_old):
 	global bot
@@ -25,10 +26,9 @@ def main(message, bot_old):
 	res_parse = json.loads(res)
 
 	if res_parse["store_pass"] == 'pass_server':
-		global password
 		with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'r') as f:
 			password = f.read()
-		main_handlers(message)
+		main_handlers(message, password)
 	else:
 		msg = bot.send_message(message.chat.id, 'Введите пароль.')
 		bot.register_next_step_handler(msg, sign_response)
@@ -48,12 +48,15 @@ def sign_response(message):
 		return
 	print(str(decrypt))
 	if str(decrypt) == t_str:
-		main_handlers(message)
+		main_handlers(message, str(message.text))
 	else:
 	 	bot.send_message(message.chat.id, 'Пароль не верен.')
 	 	return
-def main_handlers(message):
+
+
+def main_handlers(message, password):
 	bot.send_message(message.chat.id, 'Вы аутентифицировались.')
+	
 	@bot.message_handler(commands=['touch'])
 	def touch_func_in_main(message):
 		touch_main(message, bot)
@@ -78,6 +81,9 @@ def main_handlers(message):
 	@bot.message_handler(commands=['edit'])
 	def edit_handler_auth_main(message):
 		edit_main(message, bot)
+	@bot.message_handler(commands=['settings'])
+	def settings_handler_auth_main(message):
+		settings.settings_begin_mess(message, bot, True, password)
 
 	@bot.message_handler(func=lambda message: True, content_types=['text'])
 	def error(message):

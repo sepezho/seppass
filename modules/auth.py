@@ -9,7 +9,7 @@ def auth_main(message, bot):
 	c.execute(query)
 
 	if c.fetchone() == (0,):
-		settings_begin_mess(message, bot)
+		settings_begin_mess(message, bot, False, None)
 	else:
 		main(message, bot)
 

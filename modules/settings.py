@@ -1,10 +1,16 @@
 from telebot import types
 from login import login_pass_query
+import sqlite3
+import os
 
-def settings_begin_mess(message, bot_old):
+def settings_begin_mess(message, bot_old, is_auth_import, password_old):
 	global bot
 	bot = bot_old
-	bot.send_message(message.chat.id, 'Начнем с настроек.')
+	global is_auth
+	is_auth = is_auth_import
+	global password
+	password = password_old
+	bot.send_message(message.chat.id, 'Перейдем к настройкам.')
 	settings_begin(message)
 
 def settings_begin(message):
@@ -130,10 +136,31 @@ def finish_reg(message):
 	bot.delete_message(message.chat.id, message.message_id - 1)
 	bot.delete_message(message.chat.id, message.message_id - 2)
 
-	if message.text == 'Да':
+	if message.text == 'Да' and not is_auth:
 		login_pass_query(message, bot, settings)
+	elif message.text == 'Да' and is_auth:
+		bot.delete_message(message.chat.id, message.message_id - 3)
+		bot.delete_message(message.chat.id, message.message_id - 4)
+		finish_settings_auth(message)
 	elif message.text == 'Нет':
 		settings_begin(message)
 	else:
 		bot.send_message(message.chat.id, "Я вас не понял.")
 		setting_finish(message.chat.id)
+		
+def finish_settings_auth(message):
+	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
+	c = conn.cursor()
+	query = "UPDATE Users SET Settings = \""+str(settings)+"\" WHERE User_id = '"+str(message.from_user.id)+"'"
+	c.execute(query)
+	conn.commit()
+	conn.close()
+	
+	if settings["store_pass"] == "pass_server":
+		with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
+			f.write(password)
+	else:
+		if os.path.isfile('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt'):
+			os.remove('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt')
+
+
