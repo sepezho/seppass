@@ -17,13 +17,13 @@ def finish_login(message):
 	gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg/')
 	input_data = gpg.gen_key_input(
 		passphrase=message.text,
-		name_real= str(message.from_user.id))
+		name_real='user_'+str(message.from_user.id))
 	key = gpg.gen_key(input_data)
 	key = key.fingerprint
 	data = ((str(message.from_user.id), key, str(settings)))
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
-	query = "touch INTO Users VALUES (?, ?, ?)"
+	query = "INSERT INTO Users VALUES (?, ?, ?)"
 	c.execute(query, data)
 	conn.commit()
 	conn.close()

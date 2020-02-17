@@ -1,6 +1,7 @@
 import sqlite3
 import json
 import sys
+import gnupg
 
 sys.path.append('./modules/handlers')
 from touch import touch_main
@@ -8,6 +9,7 @@ from mkd import mkd_main
 from cat import cat_main
 from ls import ls_main
 from rm import rm_main
+from mv import mv_main
 from gen import gen_main
 from edit import edit_main
 
@@ -21,26 +23,37 @@ def main(message, bot_old):
 	res = c.execute(query).fetchall()[0][0]
 	res = res.replace("'", '"')
 	res_parse = json.loads(res)
-	
-	global password
-	with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'r') as f:
-		password = f.read()
-	
+
 	if res_parse["store_pass"] == 'pass_server':
+		global password
+		with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'r') as f:
+			password = f.read()
 		main_handlers(message)
 	else:
 		msg = bot.send_message(message.chat.id, 'Введите пароль.')
 		bot.register_next_step_handler(msg, sign_response)
 
 def sign_response(message):
-	if password == message.text:
+	error = True
+	t_str = 'test_str'
+	try:
+		error = True
+		gpg = gnupg.GPG()
+		encrypt = gpg.encrypt(t_str, recipients='user_'+str(message.from_user.id))
+		decrypt = gpg.decrypt(str(encrypt), passphrase=str(message.text))
+
+	except TypeError as e:
+		error = False
+		bot.send_message(message.chat.id, 'Error: '+ str(e))
+		return
+	print(str(decrypt))
+	if str(decrypt) == t_str:
 		main_handlers(message)
 	else:
-		msg = bot.send_message(message.chat.id, 'Пароль не верен, повторите ввод.')
-		bot.register_next_step_handler(msg, sign_response)
-
+	 	bot.send_message(message.chat.id, 'Пароль не верен.')
+	 	return
 def main_handlers(message):
-	bot.send_message(message.chat.id, 'Вы подтвердили что это вы.')
+	bot.send_message(message.chat.id, 'Вы аутентифицировались.')
 	@bot.message_handler(commands=['touch'])
 	def touch_func_in_main(message):
 		touch_main(message, bot)
@@ -56,21 +69,19 @@ def main_handlers(message):
 	@bot.message_handler(commands=['rm'])
 	def rm_func_in_main(message):
 		rm_main(message, bot)
+	@bot.message_handler(commands=['mv'])
+	def mv_handler_auth_main(message):
+		mv_main(message, bot)
 	@bot.message_handler(commands=['gen'])
 	def gen_handler_auth_main(message):
 		gen_main(message, bot)
 	@bot.message_handler(commands=['edit'])
 	def edit_handler_auth_main(message):
 		edit_main(message, bot)
-		
+
 	@bot.message_handler(func=lambda message: True, content_types=['text'])
 	def error(message):
 		if message.text[0] != '/':
 			bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
 		else:
 			bot.send_message(message.chat.id,'Функции '+message.text+' не существует. Используй /help.')
-
-	# @bot.message_handler(commands=['mv'])
-	# def message_handler_auth_main(message):
-	# @bot.message_handler(commands=['settings'])
-	# def message_handler_auth_main(message):
