@@ -28,7 +28,7 @@ def pass_gen(command):
 	elif int(command[3]) == 1:
 		chars = 'aghijEFGHIJzABCDKLMNklnop0qrstSTUVWXYZ123uvwxyOPQR456bcdef789'
 	elif int(command[3]) == 2:
-		chars = '+=_-)(*?:%;№"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+		chars = '+=_-)(*?:%;"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 	else:
 		bot.send_message(message.chat.id,'Сложность пароля варьируется от 0 до 2.')
 		return
@@ -55,7 +55,7 @@ def generate_req(bot, command, message):
 	markup.add('Да')
 	markup.add('Создать новую')
 	markup.add('Выйти')
-	mes = bot.send_message(message.chat.id,'Запись сгенерированна:\n'+password+'\n\nСохранить?', reply_markup = markup)
+	mes = bot.send_message(message.chat.id,'Запись сгенерированна:\n\n'+password+'\n\nСохранить?', reply_markup = markup)
 	bot.register_next_step_handler(mes, finish_gen)
 
 

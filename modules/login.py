@@ -20,6 +20,7 @@ def finish_login(message):
 		name_real='user_'+str(message.from_user.id))
 	key = gpg.gen_key(input_data)
 	key = key.fingerprint
+	os.system('echo RELOADAGENT | gpg-connect-agent')
 	data = ((str(message.from_user.id), key, str(settings)))
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()

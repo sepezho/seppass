@@ -2,6 +2,7 @@ import sqlite3
 import json
 import sys
 import gnupg
+import os
 
 sys.path.append('./modules/handlers')
 from touch import touch_main
@@ -34,29 +35,25 @@ def main(message, bot_old):
 		bot.register_next_step_handler(msg, sign_response)
 
 def sign_response(message):
-	error = True
 	t_str = 'test_str'
 	try:
-		error = True
+		# gpg = gnupg.GPG(gnupghome='/home/sepezho/.gnupg')
 		gpg = gnupg.GPG()
 		encrypt = gpg.encrypt(t_str, recipients='user_'+str(message.from_user.id))
 		decrypt = gpg.decrypt(str(encrypt), passphrase=str(message.text))
-
 	except TypeError as e:
-		error = False
 		bot.send_message(message.chat.id, 'Error: '+ str(e))
 		return
-	print(str(decrypt))
 	if str(decrypt) == t_str:
+		os.system('echo RELOADAGENT | gpg-connect-agent')
 		main_handlers(message, str(message.text))
 	else:
 	 	bot.send_message(message.chat.id, 'Пароль не верен.')
 	 	return
 
-
 def main_handlers(message, password):
 	bot.send_message(message.chat.id, 'Вы аутентифицировались.')
-	
+
 	@bot.message_handler(commands=['touch'])
 	def touch_func_in_main(message):
 		touch_main(message, bot)
@@ -91,3 +88,4 @@ def main_handlers(message, password):
 			bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
 		else:
 			bot.send_message(message.chat.id,'Функции '+message.text+' не существует. Используй /help.')
+	
