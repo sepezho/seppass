@@ -21,9 +21,67 @@ def message_handler_start_main(message):
 		'\n\nИспользуйте /auth, чтобы войти в акк, или создать его. Используйте команду /help, если растерялись.\n\nУдачи.'
 		)
 
+# isAuth = True
+# @bot.message_handler(func=lambda message: isAuth, content_types=['text'])
+# def message_handler_auth_main(message):
+# 	bot.send_message(message.chat.id,'aa')
+# 	return
 @bot.message_handler(commands=['auth'])
 def message_handler_auth_main(message):
-	auth_main(message, bot)
+	print(str(auth_main(message, bot)))
+
+def main_handlers(message, password):
+	bot.send_message(message.chat.id, 'Вы аутентифицировались.')
+
+	@bot.message_handler(commands=['touch'])
+	def touch_func_in_main(message):
+		touch_main(message, bot)
+	@bot.message_handler(commands=['mkd'])
+	def mkd_handler_auth_main(message):
+		mkd_main(message, bot)
+	@bot.message_handler(commands=['cat'])
+	def cat_func_in_main(message):
+		cat_main(message, bot, password)
+	@bot.message_handler(commands=['ls'])
+	def ls_func_in_main(message):
+		ls_main(message, bot)
+	@bot.message_handler(commands=['rm'])
+	def rm_func_in_main(message):
+		rm_main(message, bot)
+	@bot.message_handler(commands=['mv'])
+	def mv_handler_auth_main(message):
+		mv_main(message, bot)
+	@bot.message_handler(commands=['gen'])
+	def gen_handler_auth_main(message):
+		gen_main(message, bot)
+	@bot.message_handler(commands=['edit'])
+	def edit_handler_auth_main(message):
+		edit_main(message, bot)
+	@bot.message_handler(commands=['settings'])
+	def settings_handler_auth_main(message):
+		settings.settings_begin_mess(message, bot, True, password)
+
+	@bot.message_handler(func=lambda message: True, content_types=['text'])
+	def error(message):
+		if message.text[0] != '/':
+			bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
+		else:
+			bot.send_message(message.chat.id,'Функции '+message.text+' не существует. Используй /help.')
+	
+
+
+# @bot.message_handler(func=lambda message: isAuth, content_types=['text'])
+# def message_handler_auth_main(message):
+
+
+# def error_user_write():
+# 	@bot.message_handler(func=lambda message: True, content_types=['text'])
+# 	def error(message):
+# 		auth_main(message, bot)
+# 		return
+# 	return
+
+# error_user_write()
 
 @bot.message_handler(commands=['help'])
 def message_handler_auth_main(message):
@@ -65,5 +123,9 @@ def message_handler_auth_main(message):
 		'Have a nice day\n'+
 		'════════╣ Created by SEPEZHO ╠════════\n',
 		reply_markup=markup)
+
+@bot.message_handler(func=lambda message: True)
+def echo_all(message):
+	bot.reply_to(message, message.text)
 
 bot.polling()

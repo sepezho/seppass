@@ -30,9 +30,13 @@ def main(message, bot_old):
 		with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'r') as f:
 			password = f.read()
 		main_handlers(message, password)
+		return password
 	else:
-		msg = bot.send_message(message.chat.id, 'Введите пароль.')
-		bot.register_next_step_handler(msg, sign_response)
+		return False
+
+def func_password_handler()
+	msg = bot.send_message(message.chat.id, 'Введите пароль.')
+	bot.register_next_step_handler(msg, sign_response)
 
 def sign_response(message):
 	t_str = 'test_str'
@@ -47,9 +51,10 @@ def sign_response(message):
 	if str(decrypt) == t_str:
 		os.system('echo RELOADAGENT | gpg-connect-agent')
 		main_handlers(message, str(message.text))
+		return True
 	else:
 	 	bot.send_message(message.chat.id, 'Пароль не верен.')
-	 	return
+	 	return False
 
 def main_handlers(message, password):
 	bot.send_message(message.chat.id, 'Вы аутентифицировались.')
