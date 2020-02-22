@@ -9,9 +9,9 @@ def cat_main(message, bot, password):
 		if os.path.isfile(file):
 			gpg = gnupg.GPG()
 			with open(file, 'rb') as f:
+				# status = gpg.decrypt_file(file=f, passphrase=password)
 				status = gpg.decrypt_file(file=f)
 			os.system('echo RELOADAGENT | gpg-connect-agent')
-			# bot.send_message(message.chat.id, 'status: '+str(status.ok))
 			bot.send_message(message.chat.id, 'Запись '+name+':\n\n'+str(status))
 		else:
 			bot.send_message(message.chat.id, 'Такой записи не существует.')

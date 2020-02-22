@@ -2,7 +2,7 @@ import os
 import gnupg
 import sqlite3
 from telebot import types
-from main import main
+import auth
 
 def login_pass_query(message, bot_old, settings_old):
 	global bot
@@ -34,4 +34,4 @@ def finish_login(message):
 		bot.send_message(message.chat.id, 'Регистрация прошла успешно. Пароль храниться на сервере.\n\nВаш user id:\n'+str(message.from_user.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key))
 	else:
 		bot.send_message(message.chat.id, 'Регистрация прошла успешно. Запомните пароль, в случае его утери ваш акк не восстановить (пока).\n\nВаш user id:\n'+str(message.from_user.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key))
-	main(message, bot)
+	auth.finish_auth(message)
