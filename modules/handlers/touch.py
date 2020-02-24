@@ -1,5 +1,7 @@
 import os
 import gnupg
+from del_mess import del_mess
+
 def touch_main(message, bot_old):
 	global bot
 	bot = bot_old
@@ -10,7 +12,8 @@ def touch_main(message, bot_old):
 		global name
 		name = command[1]
 		if os.path.isfile(way +'/'+ name+'.gpg'):
-			bot.send_message(message.chat.id, 'Такая запись уже существует.')
+			msg = bot.send_message(message.chat.id, 'Такая запись уже существует.')
+			del_mess(msg, bot, 2)
 		else:
 			part = name.split('/')
 			if len(part) < 9:
@@ -18,11 +21,14 @@ def touch_main(message, bot_old):
 				try:
 					bot.register_next_step_handler(msg, touch_pass_query)
 				except:
-					bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
+					msg = bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
+					del_mess(msg, bot, 2)
 			else:
-				bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
+				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
+				del_mess(msg, bot, 2)
 	else:
-		bot.send_message(message.chat.id,'Используйте правильный синтаксис: /touch папка/имя_записи')
+		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /touch папка/имя_записи')
+		del_mess(msg, bot, 2)
 		
 def touch_pass_query(message):
 	val_old = '/'
@@ -36,4 +42,5 @@ def touch_pass_query(message):
         recipients='sepezho',
         output=way + '/' + name + '.gpg',
     )
-	bot.send_message(message.chat.id,'Запись ' + name + ' добавлена.')
+	msg = bot.send_message(message.chat.id,'Запись ' + name + ' добавлена.')
+	del_mess(msg, bot, 4)

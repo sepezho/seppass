@@ -1,9 +1,10 @@
 import os
 import shutil
+from del_mess import del_mess
 
 def mv_main(message, bot):
 	command = message.text.split()
-	
+	msg = None
 	if len(command) == 3:
 
 		path = command[1]
@@ -22,32 +23,33 @@ def mv_main(message, bot):
 				try:
 					shutil.move(full_path+'.gpg', full_path_to+'/'+path.split('/')[-1]+'.gpg')
 				except:
-					bot.send_message(message.chat.id, 'Произошла ошибка. Проверте синтаксис и логику.')
+					msg = bot.send_message(message.chat.id, 'Произошла ошибка. Проверте синтаксис и логику.')
+					del_mess(msg, bot, 2)
 					return
 
 				if path_to == '':
 					path_to='user_' + str(message.from_user.id)
 
-				bot.send_message(message.chat.id, 'Файл '+path.split('/')[-1]+' перемещен в '+path_to+'.')
+				msg = bot.send_message(message.chat.id, 'Файл '+path.split('/')[-1]+' перемещен в '+path_to+'.')
 			else:
-				bot.send_message(message.chat.id, 'В конечной папке уже существует такой файл.')
-				return
+				msg = bot.send_message(message.chat.id, 'В конечной папке уже существует такой файл.')
 		elif os.path.isdir(full_path):
 			if not(os.path.isdir(full_path_to+'/'+path.split('/')[-1])):
 				try:
 					shutil.move(full_path, full_path_to+'/'+path.split('/')[-1])
 				except:
-					bot.send_message(message.chat.id, 'Произошла ошибка. Проверте синтаксис и логику.')
+					msg = bot.send_message(message.chat.id, 'Произошла ошибка. Проверте синтаксис и логику.')
+					del_mess(msg, bot, 2)
 					return
 				
 				if path_to == '':
 					path_to='user_' + str(message.from_user.id)
 
-				bot.send_message(message.chat.id, 'Папка '+path.split('/')[-1]+' перемещена в '+path_to+'.')
+				msg = bot.send_message(message.chat.id, 'Папка '+path.split('/')[-1]+' перемещена в '+path_to+'.')
 			else:
-				bot.send_message(message.chat.id, 'В конечной папке уже существует такая папка.')
-				return
+				msg = bot.send_message(message.chat.id, 'В конечной папке уже существует такая папка.')
 		else:
-			bot.send_message(message.chat.id, 'Такого пути не существует.')
+			msg = bot.send_message(message.chat.id, 'Такого пути не существует.')
 	else:
-		bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mv начальный_путь конечный_путь (начальный путь указывается с названием перемещаемого папки/файла, конеченый путь - без).')
+		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mv начальный_путь конечный_путь (начальный путь указывается с названием перемещаемого папки/файла, конеченый путь - без).')
+	del_mess(msg, bot, 2)

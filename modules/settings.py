@@ -1,5 +1,6 @@
-from telebot import types
 from login import login_pass_query
+from del_mess import del_mess
+from telebot import types
 import sqlite3
 import os
 
@@ -132,15 +133,11 @@ def setting_finish(chat_id):
 	bot.register_next_step_handler(end_settings, finish_reg)
 
 def finish_reg(message):
-	bot.delete_message(message.chat.id, message.message_id)
-	bot.delete_message(message.chat.id, message.message_id - 1)
-	bot.delete_message(message.chat.id, message.message_id - 2)
-
 	if message.text == 'Да' and not is_auth:
+		del_mess(message, bot, 3)
 		login_pass_query(message, bot, settings)
 	elif message.text == 'Да' and is_auth:
-		bot.delete_message(message.chat.id, message.message_id - 3)
-		bot.delete_message(message.chat.id, message.message_id - 4)
+		del_mess(message, bot, 5)
 		finish_settings_auth(message)
 	elif message.text == 'Нет':
 		settings_begin(message)

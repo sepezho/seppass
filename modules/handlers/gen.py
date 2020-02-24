@@ -2,6 +2,7 @@ import os
 import gnupg
 import random
 from telebot import types
+from del_mess import del_mess
 
 def gen_main(message, bot):
 	command = message.text.split()
@@ -11,43 +12,51 @@ def gen_main(message, bot):
 		global name
 		name = command[1]
 		if os.path.isfile(way +'/'+ name+'.gpg'):
-			bot.send_message(message.chat.id, 'Такая запись уже существует.')
+			msg = bot.send_message(message.chat.id, 'Такая запись уже существует.')
+			del_mess(msg, bot, 2)
 		else:
 			part = name.split('/')
 			if len(part) < 9:
 				generate_req(bot, command, message)
 			else:
-				bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
+				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
+				del_mess(msg, bot, 2)
 	else:
-		bot.send_message(message.chat.id,'Используйте правильный синтаксис: /gen папка/имя_записи 12 1')
+		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /gen папка/имя_записи 12 1')
+		del_mess(msg, bot, 2)
 	
 def pass_gen(command):
 	password = ''
 	if int(command[3]) == 0:
 		chars = 'abn789opuv345qrst6fgcdelwxyz12hijk0'
 	elif int(command[3]) == 1:
-		chars = 'aghijEFGHIJzABCDKLMNklnop0qrstSTUVWXYZ123uvwxyOPQR456bcdef789'
+		chars = 'aghijEFGABCDKLMNklnouvwxyOPQp0qrstSTUVWXYZHIJz123R456bcdef789'
 	elif int(command[3]) == 2:
-		chars = '+=_-)(*?:%;"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+		chars = '+rIJK}{[]-LMVWXY><._Z123:%;"NO/|abc!,dT=_efgstu%;"!pq(*?}{[vwPQRS-)(U456789,)*~`xyz:]><.~`/|ABCDEFGhijk+=?lno0'
 	else:
-		bot.send_message(message.chat.id,'Сложность пароля варьируется от 0 до 2.')
+		msg = bot.send_message(message.chat.id,'Сложность пароля варьируется от 0 до 2.')
+		del_mess(msg, bot, 2)
 		return
 
 	for i in range(int(command[2])):
 		password += random.choice(chars)
 	return password
 
+num = 0
 def generate_req(bot, command, message):
-
+	global num
+	num += 3
 	def finish_gen(message):
 		if message.text == 'Да':
-			bot.send_message(message.chat.id,'Запись '+name+' сохранена.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			msg = bot.send_message(message.chat.id,'Запись '+name+' сохранена.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			del_mess(msg, bot, num+1)
 			gen_pass_query(password, str(message.from_user.id))
 		elif message.text == 'Создать новую':
 			bot.send_message(message.chat.id,'Сгенерируем еще одну запись...', reply_markup = types.ReplyKeyboardRemove(selective=False))
 			generate_req(bot, command, message)
 		else:
-			bot.send_message(message.chat.id,'Выход...', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			msg = bot.send_message(message.chat.id,'Выход...', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			del_mess(msg, bot, num+1)
 			return
 
 	password = pass_gen(command)

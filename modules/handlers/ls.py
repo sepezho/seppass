@@ -1,4 +1,5 @@
 import os
+from del_mess import del_mess
 
 def ls_main(message, bot):
 	command = message.text.split()
@@ -11,14 +12,17 @@ def ls_main(message, bot):
 				way = way[:-1]
 			if os.path.isdir(way):
 				text = ls(way)
-				bot.send_message(message.chat.id, text)
+				msg = bot.send_message(message.chat.id, text)
 			else:
-				bot.send_message(message.chat.id,'Такой папки не существует.')
+				msg = bot.send_message(message.chat.id,'Такой папки не существует.')
 		else: 
-			bot.send_message(message.chat.id,'Используйте правильный синтаксис: /ls папка/папка (или просто /ls)')
-	else:
+			msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /ls папка/папка (или просто /ls)')
+	elif len(command) == 1:
 		text = ls(way)
-		bot.send_message(message.chat.id, text)
+		msg = bot.send_message(message.chat.id, text)
+	else: 
+		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /ls папка/папка (или просто /ls)')
+	del_mess(msg, bot, 2)
 
 def ls(root_folder):
 	if root_folder[-1] == '/':

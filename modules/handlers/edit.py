@@ -1,5 +1,7 @@
 import os
 import gnupg
+from del_mess import del_mess
+
 def edit_main(message, bot_old):
 	global bot
 	bot = bot_old
@@ -14,12 +16,16 @@ def edit_main(message, bot_old):
 			try:
 				bot.register_next_step_handler(msg, rm_and_create_file)
 			except:
-				bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
+				msg = bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
+				del_mess(msg, bot, 4)
 		else:
-			bot.send_message(message.chat.id, 'Такой записи/папки не существует.')
+			msg = bot.send_message(message.chat.id, 'Такой записи/папки не существует.')
+			del_mess(msg, bot, 2)
 	else:
-		bot.send_message(message.chat.id,'Используйте правильный синтаксис: /edit папка/имя_записи')
+		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /edit папка/имя_записи')
+		del_mess(msg, bot, 2)
 		return
+
 def rm_and_create_file(message):
 	global file
 	gpg = gnupg.GPG()
@@ -30,4 +36,5 @@ def rm_and_create_file(message):
         recipients='sepezho',
         output= file + '.gpg',
     )
-	bot.send_message(message.chat.id,'Запись ' + name + ' изменена.')
+	msg = bot.send_message(message.chat.id,'Запись ' + name + ' изменена.')
+	del_mess(msg, bot, 4)

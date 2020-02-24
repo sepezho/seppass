@@ -1,10 +1,12 @@
 import os
 from ls import ls
+from del_mess import del_mess
 
 def mkd_main(message, bot):
 	command = message.text.split()
 	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
-
+	msg = None
+	
 	if (len(command) == 2) and (command[1].find('//') == -1) and (command[1].find('.') == -1):
 		
 		name = command[1]
@@ -16,14 +18,16 @@ def mkd_main(message, bot):
 		part = name.split('/')
 		if len(part) < 9:
 			if os.path.isdir(way+'/'+name):
-				bot.send_message(message.chat.id,'Такая папка уже существует.\n\n' + ls(way+'/'+name))
+				msg = bot.send_message(message.chat.id,'Такая папка уже существует.\n\n' + ls(way+'/'+name))
 			else:
 				try:
 					os.makedirs(way+'/'+name)
-					bot.send_message(message.chat.id,'Папка '+name+' создана.')
+					msg = bot.send_message(message.chat.id,'Папка '+name+' создана.')
 				except:
-					bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
+					msg = bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
 		else:
-			bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
+			msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 	else:
-		bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mkd папка/имя_записи')
+		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mkd папка/имя_записи')
+	
+	del_mess(msg, bot, 2)
