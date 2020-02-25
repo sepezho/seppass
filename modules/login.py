@@ -1,8 +1,8 @@
 import os
 import gnupg
 import sqlite3
+import auth
 from telebot import types
-from auth import finish_auth
 from telebot import types
 from del_mess import del_mess
 
@@ -55,4 +55,4 @@ def finish_login(message):
 def complete_finish_login(message):
 	msg = bot.send_message(message.chat.id, 'На этом мы закончим.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 	del_mess(msg, bot, 4)
-	finish_auth(message)
+	auth.finish_auth(message)
