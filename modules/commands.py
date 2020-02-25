@@ -1,7 +1,6 @@
-from auth import auth_main
 import sys
+from auth import auth_main
 from del_mess import del_mess
-# from del_mess import del_mess, del_mess_main
 
 sys.path.append('./modules/handlers')
 from touch import touch_main
@@ -12,12 +11,13 @@ from rm import rm_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
+from settings import settings_begin_mess
 from delete_account import delete_account_main
-import settings
 
 user_password = None
-def commands_main(bot):
 
+
+def commands_main(bot):
 	@bot.message_handler(commands=['auth'])
 	def message_handler_auth_main(message):
 		global user_password
@@ -132,7 +132,7 @@ def commands_main(bot):
 	def settings_handler_auth_main(message):
 		global user_password
 		if user_password != None:
-			settings.settings_begin_mess(message, bot, True, user_password)
+			settings_begin_mess(message, bot, True, user_password)
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)

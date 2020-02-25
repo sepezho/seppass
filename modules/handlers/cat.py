@@ -1,5 +1,5 @@
-import gnupg
 import os
+import gnupg
 from del_mess import del_mess
 
 def cat_main(message, bot, password):
