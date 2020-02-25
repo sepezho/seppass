@@ -8,27 +8,26 @@ def touch_main(message, bot_old):
 	command = message.text.split()
 	global way
 	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
+	msg = None
 	if (len(command) == 2) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][-1] != '/'):
 		global name
 		name = command[1]
 		if os.path.isfile(way +'/'+ name+'.gpg'):
 			msg = bot.send_message(message.chat.id, 'Такая запись уже существует.')
-			del_mess(msg, bot, 2)
 		else:
 			part = name.split('/')
 			if len(part) < 9:
-				msg = bot.send_message(message.chat.id,'Отправте свою запись (не бойтесь, за ее сохранность, я ее удалю из ваших сообщений).')
+				msg_handler = bot.send_message(message.chat.id,'Отправте свою запись (не бойтесь, за ее сохранность, я ее удалю из ваших сообщений).')
 				try:
-					bot.register_next_step_handler(msg, touch_pass_query)
+					bot.register_next_step_handler(msg_handler, touch_pass_query)
 				except:
 					msg = bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
-					del_mess(msg, bot, 2)
+					del_mess(msg, bot, 4)
 			else:
 				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
-				del_mess(msg, bot, 2)
 	else:
 		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /touch папка/имя_записи')
-		del_mess(msg, bot, 2)
+	del_mess(msg, bot, 2)
 		
 def touch_pass_query(message):
 	val_old = '/'
@@ -38,8 +37,7 @@ def touch_pass_query(message):
 	gpg = gnupg.GPG()
 	gpg.encrypt(
         message.text,
-        # recipients=['user_'+user_id],
-        recipients='sepezho',
+        recipients=['user_'+str(message.from_user.id)],
         output=way + '/' + name + '.gpg',
     )
 	msg = bot.send_message(message.chat.id,'Запись ' + name + ' добавлена.')

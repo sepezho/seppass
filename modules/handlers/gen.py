@@ -8,22 +8,21 @@ def gen_main(message, bot):
 	command = message.text.split()
 	global way
 	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
+	msg = None
 	if (len(command) == 4) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][-1] != '/'):
 		global name
 		name = command[1]
 		if os.path.isfile(way +'/'+ name+'.gpg'):
 			msg = bot.send_message(message.chat.id, 'Такая запись уже существует.')
-			del_mess(msg, bot, 2)
 		else:
 			part = name.split('/')
 			if len(part) < 9:
 				generate_req(bot, command, message)
 			else:
 				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
-				del_mess(msg, bot, 2)
 	else:
 		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /gen папка/имя_записи 12 1')
-		del_mess(msg, bot, 2)
+	del_mess(msg, bot, 2)
 	
 def pass_gen(command):
 	password = ''
@@ -76,7 +75,6 @@ def gen_pass_query(password, user_id):
 	gpg = gnupg.GPG()
 	gpg.encrypt(
         password,
-        # recipients=['user_'+user_id],
-        recipients='sepezho',
+        recipients=['user_'+user_id],
         output=way + '/' + name + '.gpg',
     )

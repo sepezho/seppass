@@ -29,5 +29,4 @@ def mkd_main(message, bot):
 			msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 	else:
 		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mkd папка/имя_записи')
-	
 	del_mess(msg, bot, 2)

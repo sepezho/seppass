@@ -1,9 +1,10 @@
 import time
 
 def del_mess(message, bot, num):
-	time.sleep(45)
-	for i in range(num):
-		bot.delete_message(message.chat.id, message.message_id - i)
+	print('delete')
+	# time.sleep(5)
+	# for i in range(num):
+	# 	bot.delete_message(message.chat.id, message.message_id - i)
 
 # def del_mess_main(message, bot):
 # 	bot.send_message(message.chat.id, 'Введите кол-во сообщений, которые хотите удалить.')

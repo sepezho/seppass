@@ -12,6 +12,7 @@ from rm import rm_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
+from delete_account import delete_account_main
 import settings
 
 user_password = None
@@ -33,6 +34,17 @@ def commands_main(bot):
 			touch_main(message, bot)
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+
+	@bot.message_handler(commands=['logout'])
+	def logout_func_in_main(message):
+		global user_password
+		if user_password != None:
+			user_password = None
+			msg = bot.send_message(message.chat.id, 'Вы вышли.')
+			del_mess(msg, bot, 2)
+		else:
+			msg = bot.send_message(message.chat.id, 'Чтобы выйти, надо войти, используя /auht.\n\n(с) Конфуций.')
 			del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['mkd'])
@@ -97,7 +109,16 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-	
+
+	@bot.message_handler(commands=['delete_account'])
+	def delete_account_handler_auth_main(message):
+		global user_password
+		if user_password != None:
+			user_password = delete_account_main(message, bot, user_password)
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+
 	# @bot.message_handler(commands=['delmes'])
 	# def del_mess_handler_auth_main(message):
 	# 	global user_password
@@ -118,9 +139,9 @@ def commands_main(bot):
 	
 	@bot.message_handler(func=lambda message: True, content_types=['text'])
 	def error(message):
+		msg = None
 		if message.text[0] != '/':
 			msg = bot.send_message(message.chat.id,'Я смотрю ты потерялся. Используй /help.')
-			del_mess(msg, bot, 2)
 		else:
 			msg = bot.send_message(message.chat.id,'Функции '+message.text+' не существует. Используй /help.')
-			del_mess(msg, bot, 2)
+		del_mess(msg, bot, 2)

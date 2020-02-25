@@ -91,7 +91,7 @@ def setting_store_keys(message):
 	markup.add(types.InlineKeyboardButton(text='На сервере', callback_data = 'key_serv'))
 	# markup.add(types.InlineKeyboardButton(text='GitHub (dont work)', callback_data = 'key_on_GitHub'))
 	markup.add(types.InlineKeyboardButton(text='Вернуться', callback_data = 'back'))
-	markup.add(types.InlineKeyboardButton(text='Закончить', callback_data = 'finish'))
+	# markup.add(types.InlineKeyboardButton(text='Закончить', callback_data = 'finish'))
 	
 	bot.edit_message_reply_markup(message.message.chat.id, message.message.message_id, "", reply_markup = markup)
 	@bot.callback_query_handler(func=lambda message: True)
@@ -104,7 +104,7 @@ def setting_store_pass(message):
 	markup.add(types.InlineKeyboardButton(text='Вводить каждую новую сессию', callback_data = 'pass_user'))
 	# markup.add(types.InlineKeyboardButton(text='Вводить при каждой активности', callback_data = 'pass_on_activiti'))
 	markup.add(types.InlineKeyboardButton(text='Вернуться', callback_data = 'back'))
-	markup.add(types.InlineKeyboardButton(text='Закончить', callback_data = 'finish'))
+	# markup.add(types.InlineKeyboardButton(text='Закончить', callback_data = 'finish'))
 	
 	bot.edit_message_reply_markup(message.message.chat.id, message.message.message_id, "", reply_markup = markup)
 	@bot.callback_query_handler(func=lambda message: True)
@@ -118,7 +118,7 @@ def setting_authentication(message):
 	# markup.add(types.InlineKeyboardButton(text='По паролю', callback_data = 'pass_auth'))
 	# markup.add(types.InlineKeyboardButton(text='Mail (dont work)', callback_data = 'mail_auth'))
 	markup.add(types.InlineKeyboardButton(text='Вернуться', callback_data = 'back'))
-	markup.add(types.InlineKeyboardButton(text='Закончить', callback_data = 'finish'))
+	# markup.add(types.InlineKeyboardButton(text='Закончить', callback_data = 'finish'))
 
 	bot.edit_message_reply_markup(message.message.chat.id, message.message.message_id, "", reply_markup = markup)
 	@bot.callback_query_handler(func=lambda message: True)
@@ -136,6 +136,7 @@ def finish_reg(message):
 	if message.text == 'Да' and not is_auth:
 		del_mess(message, bot, 3)
 		login_pass_query(message, bot, settings)
+		
 	elif message.text == 'Да' and is_auth:
 		del_mess(message, bot, 5)
 		finish_settings_auth(message)
@@ -148,7 +149,7 @@ def finish_reg(message):
 def finish_settings_auth(message):
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
-	query = "UPDATE Users SET Settings = \""+str(settings)+"\" WHERE User_id = '"+str(message.from_user.id)+"'"
+	query = "UPDATE Users SET Settings = \""+str(settings)+"\" WHERE User_id = 'user_"+str(message.from_user.id)+"'"
 	c.execute(query)
 	conn.commit()
 	conn.close()

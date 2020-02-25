@@ -14,8 +14,9 @@ def auth_main(message, bot_old):
 	bot = bot_old
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
-	query = "SELECT COUNT(*) FROM Users WHERE User_id = '"+str(message.from_user.id)+"'"
+	query = "SELECT COUNT(*) FROM Users WHERE User_id = 'user_"+str(message.from_user.id)+"'"
 	c.execute(query)
+	print('auht')
 	if c.fetchone() == (0,):
 		settings_begin_mess(message, bot, False, None)
 	else:
@@ -26,7 +27,7 @@ def auth_main(message, bot_old):
 def finish_auth(message):
 	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
-	query = "SELECT Settings FROM Users WHERE User_id = '"+str(message.from_user.id)+"'"
+	query = "SELECT Settings FROM Users WHERE User_id = 'user_"+str(message.from_user.id)+"'"
 	res = c.execute(query).fetchall()[0][0]
 	res = res.replace("'", '"')
 	res_parse = json.loads(res)
@@ -45,6 +46,7 @@ def finish_auth(message):
 def finish_auth_pass_handler(message):
 	def finish_auth_pass(message):
 		t_str = 'test_str'
+		msg = None
 		try:
 			gpg = gnupg.GPG()
 			encrypt = gpg.encrypt(t_str, recipients='user_'+str(message.from_user.id))
@@ -52,17 +54,15 @@ def finish_auth_pass_handler(message):
 		except TypeError as e:
 			msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
 			result_available.set()
-			del_mess(msg, bot, 4)
 		if str(decrypt) == t_str:
 			os.system('echo RELOADAGENT | gpg-connect-agent')
 			msg = bot.send_message(message.chat.id, 'Вы аутентифицировались.')
 			global pas
 			pas = str(message.text)
 			result_available.set()
-			del_mess(msg, bot, 4)
 		else:
 		 	msg = bot.send_message(message.chat.id, 'Пароль не верен.')
 		 	result_available.set()
-		 	del_mess(msg, bot, 4)
+		del_mess(msg, bot, 4)
 	msg = bot.send_message(message.chat.id, 'Введите пароль.')
 	bot.register_next_step_handler(msg, finish_auth_pass)
