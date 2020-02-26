@@ -21,8 +21,7 @@ def gen_main(message, bot):
 		else:
 			part = name.split('/')
 			if len(part) < 9:
-				generate_req(bot, command, message)
-
+				return generate_req(bot, command, message)
 			else:
 				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 

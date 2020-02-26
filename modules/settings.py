@@ -1,8 +1,8 @@
+import os
+import sqlite3
 from login import login_pass_query
 from del_mess import del_mess
 from telebot import types
-import sqlite3
-import os
 
 def settings_begin_mess(message, bot_old, is_auth_import, password_old):
 	global bot
@@ -136,11 +136,13 @@ def setting_finish(chat_id):
 
 def finish_reg(message):
 	if message.text == 'Да' and not is_auth:
-		del_mess(message, bot, 3)
+		for i in range(3):
+			bot.delete_message(message.chat.id, message.message_id - i)
 		login_pass_query(message, bot, settings)
 		
 	elif message.text == 'Да' and is_auth:
-		del_mess(message, bot, 5)
+		for i in range(5):
+			bot.delete_message(message.chat.id, message.message_id - i)
 		finish_settings_auth(message)
 
 	elif message.text == 'Нет':

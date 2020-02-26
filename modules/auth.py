@@ -21,7 +21,6 @@ def auth_main(message, bot_old):
 		query = "SELECT COUNT(*) FROM Users WHERE User_id = 'user_"+str(message.from_user.id)+"'"
 		c.execute(query)
 		is_login = str(c.fetchone())
-		print(is_login)
 		conn.commit()
 		conn.close()
 
