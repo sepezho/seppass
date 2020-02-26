@@ -19,30 +19,55 @@ def login_pass_query(message, bot_old, settings_old):
 
 
 def finish_login(message):
-	os.mkdir('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id))
+	try:
+		os.mkdir('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id))
+	
+	except TypeError as e:
+		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		del_mess(msg, bot, 2)
+		return
 
-	gpg = gnupg.GPG()
-	input_data = gpg.gen_key_input(
-		passphrase=message.text,
-		name_real='user_'+str(message.from_user.id))
-	key = gpg.gen_key(input_data)
-	key = key.fingerprint
-	os.system('echo RELOADAGENT | gpg-connect-agent')
+	try:	
+		gpg = gnupg.GPG()
+		input_data = gpg.gen_key_input(
+			passphrase=message.text,
+			name_real='user_'+str(message.from_user.id)
+			)
+		key = gpg.gen_key(input_data)
+		key = key.fingerprint
+		os.system('echo RELOADAGENT | gpg-connect-agent')
 
-	data = (('user_'+str(message.from_user.id), key, str(settings)))
-	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
-	c = conn.cursor()
-	query = "INSERT INTO Users VALUES (?, ?, ?)"
-	c.execute(query, data)
-	conn.commit()
-	conn.close()
+	except TypeError as e:
+		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		del_mess(msg, bot, 2)
+		return
+
+	try:
+		data = (('user_'+str(message.from_user.id), key, str(settings)))
+		conn = sqlite3.connect('DataBase.db', check_same_thread=False)
+		c = conn.cursor()
+		query = "INSERT INTO Users VALUES (?, ?, ?)"
+		c.execute(query, data)
+		conn.commit()
+		conn.close()
+
+	except TypeError as e:
+		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		del_mess(msg, bot, 2)
+		return
 
 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 	markup.add('Да')
 
 	if settings["store_pass"] == "pass_serv":
-		with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
-			f.write(message.text)
+		try:
+			with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
+				f.write(message.text)
+		
+		except TypeError as e:
+			msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+			del_mess(msg, bot, 2)
+			return
 
 		msg_handler = bot.send_message(message.chat.id, 'Регистрация прошла успешно. Пароль храниться на сервере.\n\nВаш user id:\n'+str(message.from_user.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key)+'\n\nЗапомнили? Я сейчас это сообщение удалю, в целях сохранности ваших данных.', reply_markup = markup)
 		bot.register_next_step_handler(msg_handler, complete_finish_login)

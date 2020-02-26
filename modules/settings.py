@@ -152,19 +152,29 @@ def finish_reg(message):
 
 
 def finish_settings_auth(message):
-	conn = sqlite3.connect('DataBase.db', check_same_thread=False)
-	c = conn.cursor()
-	query = "UPDATE Users SET Settings = \""+str(settings)+"\" WHERE User_id = 'user_"+str(message.from_user.id)+"'"
-	c.execute(query)
-	conn.commit()
-	conn.close()
+	try:
+		conn = sqlite3.connect('DataBase.db', check_same_thread=False)
+		c = conn.cursor()
+		query = "UPDATE Users SET Settings = \""+str(settings)+"\" WHERE User_id = 'user_"+str(message.from_user.id)+"'"
+		c.execute(query)
+		conn.commit()
+		conn.close()
 	
-	if settings["store_pass"] == "pass_server":
-		with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
-			f.write(password)
+	except TypeError as e:
+		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		del_mess(msg, bot, 2)
+		return
 	
-	else:
-		if os.path.isfile('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt'):
-			os.remove('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt')
-
+	try:
+		if settings["store_pass"] == "pass_server":
+			with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
+				f.write(password)
+		
+		else:
+			if os.path.isfile('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt'):
+				os.remove('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt')
+	except TypeError as e:
+		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		del_mess(msg, bot, 2)
+		return
 

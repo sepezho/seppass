@@ -5,7 +5,8 @@ from del_mess import del_mess
 def ls_main(message, bot):
 	command = message.text.split()
 	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
-
+	msg = None
+	
 	if (len(command) == 2):
 		if (message.text.find('//') == -1) and (message.text.find('.') == -1):
 			way = way + '/' + command[1]

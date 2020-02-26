@@ -6,6 +6,7 @@ from del_mess import del_mess
 def mkd_main(message, bot):
 	command = message.text.split()
 	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
+	msg = None
 	
 	if (len(command) == 2) and (command[1].find('//') == -1) and (command[1].find('.') == -1):
 		
@@ -25,9 +26,8 @@ def mkd_main(message, bot):
 					os.makedirs(way+'/'+name)
 					msg = bot.send_message(message.chat.id,'Папка '+name+' создана.')
 
-				except:
-					msg = bot.send_message(message.chat.id,'Произошла ошибка. Вы уверенны, что назвали путь правильно?')
-
+				except TypeError as e:
+					msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
 		else:
 			msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 

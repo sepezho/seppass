@@ -10,6 +10,7 @@ def gen_main(message, bot):
 	global name
 	command = message.text.split()
 	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
+	msg = None
 	
 	if (len(command) == 4) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][-1] != '/'):
 		name = command[1]
@@ -62,8 +63,15 @@ def generate_req(bot, command, message):
 		if message.text == 'Да':
 			msg = bot.send_message(message.chat.id,'Запись '+name+' сохранена.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 			del_mess(msg, bot, num+1)
-			gen_pass_query(password, str(message.from_user.id))
-		
+			
+			try:
+				gen_pass_query(password, str(message.from_user.id))
+			
+			except TypeError as e:
+				msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+				del_mess(msg, bot, num+2)
+				return
+
 		elif message.text == 'Создать новую':
 			bot.send_message(message.chat.id,'Сгенерируем еще одну запись...', reply_markup = types.ReplyKeyboardRemove(selective=False))
 			generate_req(bot, command, message)
@@ -81,7 +89,6 @@ def generate_req(bot, command, message):
 
 	mes = bot.send_message(message.chat.id,'Запись сгенерированна:\n\n'+password+'\n\nСохранить?', reply_markup = markup)
 	bot.register_next_step_handler(mes, finish_gen)
-
 
 def gen_pass_query(password, user_id):
 	val_old = '/'

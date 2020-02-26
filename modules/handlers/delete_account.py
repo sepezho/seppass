@@ -36,9 +36,16 @@ def delete_account_handler(message):
 def delete_account_handler_finish(message):
 	if message.text == 'Надо.':
 		bot.send_message(message.chat.id, 'Прощайте!\n\n*звуки смерти*', reply_markup = types.ReplyKeyboardRemove(selective=False))
-		rm_db(str(message.from_user.id))
-		rm_folder(str(message.from_user.id))
-		return None
+
+		try:
+			rm_db(str(message.from_user.id))
+			rm_folder(str(message.from_user.id))
+			return None
+
+		except TypeError as e:
+			msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+			# del_mess(msg, bot, 2)
+			return None
 
 	elif message.text == 'Я передумал.':
 		bot.send_message(message.chat.id, 'Фууух, не пугайте меня так....', reply_markup = types.ReplyKeyboardRemove(selective=False))
