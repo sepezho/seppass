@@ -20,34 +20,41 @@ def mv_main(message, bot):
 
 		if os.path.isfile(full_path+'.gpg'):
 			if not(os.path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
-				try:
-					shutil.move(full_path+'.gpg', full_path_to+'/'+path.split('/')[-1]+'.gpg')
-				
-				except TypeError as e:
-					msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
-					del_mess(msg, bot, 2)
-					return
+				if not(os.path.isdir(full_path_to+'/'+path.split('/')[-1])):
+					msg = bot.send_message(message.chat.id,'Папка с таким названием в конечной директории уже существует.\n\n')
+				else:
+					try:
+						shutil.move(full_path+'.gpg', full_path_to+'/'+path.split('/')[-1]+'.gpg')
+					
+					except TypeError as e:
+						msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+						del_mess(msg, bot, 2)
+						return
 
-				if path_to == '':
-					path_to='user_' + str(message.from_user.id)
+					if path_to == '':
+						path_to='user_' + str(message.from_user.id)
 
-				msg = bot.send_message(message.chat.id, 'Файл '+path.split('/')[-1]+' перемещен в '+path_to+'.')
+					msg = bot.send_message(message.chat.id, 'Файл '+path.split('/')[-1]+' перемещен в '+path_to+'.')
 			else:
 				msg = bot.send_message(message.chat.id, 'В конечной папке уже существует такой файл.')
 		elif os.path.isdir(full_path):
 			if not(os.path.isdir(full_path_to+'/'+path.split('/')[-1])):
-				try:
-					shutil.move(full_path, full_path_to+'/'+path.split('/')[-1])
-				
-				except TypeError as e:
-					msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
-					del_mess(msg, bot, 2)
-					return
-				
-				if path_to == '':
-					path_to='user_' + str(message.from_user.id)
+				if not(os.path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
+					msg = bot.send_message(message.chat.id,'Файл с таким названием в конечной папке уже существует.\n\n')
 
-				msg = bot.send_message(message.chat.id, 'Папка '+path.split('/')[-1]+' перемещена в '+path_to+'.')
+				else:
+					try:
+						shutil.move(full_path, full_path_to+'/'+path.split('/')[-1])
+					
+					except TypeError as e:
+						msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+						del_mess(msg, bot, 2)
+						return
+					
+					if path_to == '':
+						path_to='user_' + str(message.from_user.id)
+
+					msg = bot.send_message(message.chat.id, 'Папка '+path.split('/')[-1]+' перемещена в '+path_to+'.')
 			else:
 				msg = bot.send_message(message.chat.id, 'В конечной папке уже существует такая папка.')
 		else:

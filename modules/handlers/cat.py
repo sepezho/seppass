@@ -18,7 +18,14 @@ def cat_main(message, bot, password):
 					status = gpg.decrypt_file(file=f, passphrase=password)
 
 				os.system('echo RELOADAGENT | gpg-connect-agent')
-				msg = bot.send_message(message.chat.id, 'Запись '+name+':\n\n'+str(status))
+
+				msg = bot.send_message(message.chat.id, 'Запись '+name+':')
+				if str(status) != '':
+					msg = bot.send_message(message.chat.id, str(status))
+					del_mess(msg, bot, 3)
+				else:
+					msg = bot.send_message(message.chat.id, 'Undefined')
+					del_mess(msg, bot, 3)
 
 			except TypeError as e:
 				msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
@@ -26,8 +33,8 @@ def cat_main(message, bot, password):
 				return
 		else:
 			msg = bot.send_message(message.chat.id, 'Такой записи не существует.')
+			del_mess(msg, bot, 2)
 
 	else:
 		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /cat папка/имя_записи')
-
-	del_mess(msg, bot, 2)
+		del_mess(msg, bot, 2)

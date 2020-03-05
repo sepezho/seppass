@@ -12,18 +12,27 @@ def gen_main(message, bot):
 	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
 	msg = None
 	
-	if (len(command) == 4) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][-1] != '/'):
+	if (len(command) == 4) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):
 		name = command[1]
 		
 		if os.path.isfile(way +'/'+ name+'.gpg'):
-			msg = bot.send_message(message.chat.id, 'Такая запись уже существует.')
+			msg = bot.send_message(message.chat.id,'Файл с таким названием в этой папке уже существует.\n\n')
 
 		else:
-			part = name.split('/')
-			if len(part) < 9:
-				return generate_req(bot, command, message)
+			if os.path.isdir(way +'/'+ name):
+				msg = bot.send_message(message.chat.id,'Папка с таким названием уже сужествует в этой директории.\n\n')
+							
 			else:
-				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
+				part = name.split('/')
+				if len(part) < 9:
+					if int(command[2]) < 26:
+						return generate_req(bot, command, message)
+
+					else:
+						msg = bot.send_message(message.chat.id,'Макс. длина генерации - 25 симболов.')
+
+				else:
+					msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 
 	else:
 		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /gen папка/имя_записи 12 1')
@@ -34,13 +43,13 @@ def gen_main(message, bot):
 def pass_gen(command):
 	password = ''
 	if int(command[3]) == 0:
-		chars = 'abn789opuv345qrst6fgcdelwxyz12hijk0'
+		chars = 'abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 	
 	elif int(command[3]) == 1:
-		chars = 'aghijEFGABCDKLMNklnouvwxyOPQp0qrstSTUVWXYZHIJz123R456bcdef789'
+		chars = '+=_-)(*?:%;№"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 	
 	elif int(command[3]) == 2:
-		chars = '+rIJK}{[]-LMVWXY><._Z123:%;"NO/|abc!,dT=_efgstu%;"!pq(*?}{[vwPQRS-)(U456789,)*~`xyz:]><.~`/|ABCDEFGhijk+=?lno0'
+		chars = '+=_-)(*?:%;№"!,}{[]><.~`/|+=_-)(*?:%;№"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 	
 	else:
 		msg = bot.send_message(message.chat.id,'Сложность пароля варьируется от 0 до 2.')

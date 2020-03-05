@@ -11,7 +11,7 @@ def edit_main(message, bot_old):
 	command = message.text.split()
 	msg = None
 	
-	if len(command) == 2:
+	if (len(command) == 2) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):
 		name = command[1]
 		file = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name
 
