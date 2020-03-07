@@ -9,7 +9,7 @@ def gen_main(message, bot):
 	global way
 	global name
 	command = message.text.split()
-	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
+	way = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)
 	msg = None
 	
 	if (len(command) == 4) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):

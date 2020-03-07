@@ -8,7 +8,7 @@ def cat_main(message, bot, password):
 	msg = None
 	if len(command) == 2:
 		name = command[1]
-		file = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name+'.gpg'
+		file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name+'.gpg'
 
 		if os.path.isfile(file):
 			try:

@@ -78,5 +78,5 @@ def rm_db(user_id):
 
 
 def rm_folder(user_id):
-	folder = '/home/sepezho/Documents/seppass/Users_folder/user_' + user_id
+	folder = '/home/sepezho/Documents/Seppass/Users_folder/user_' + user_id
 	shutil.rmtree(folder)

@@ -15,8 +15,8 @@ def mv_main(message, bot):
 		if path_to[0] == '/':
 			path_to = path_to[1:]
 		
-		full_path = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ path
-		full_path_to = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ path_to
+		full_path = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ path
+		full_path_to = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ path_to
 
 		if os.path.isfile(full_path+'.gpg'):
 			if not(os.path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):

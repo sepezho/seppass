@@ -10,7 +10,7 @@ def touch_main(message, bot_old):
 
 	bot = bot_old
 	command = message.text.split()
-	way = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id)
+	way = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)
 	msg = None
 	
 	if (len(command) == 2) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):

@@ -13,7 +13,7 @@ def edit_main(message, bot_old):
 	
 	if (len(command) == 2) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):
 		name = command[1]
-		file = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name
+		file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name
 
 		if os.path.isfile(file+'.gpg'):
 			msg_handler = bot.send_message(message.chat.id,'Отправте новую запись (не бойтесь, за ее сохранность, я ее удалю из ваших сообщений).')

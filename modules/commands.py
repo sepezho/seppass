@@ -11,6 +11,7 @@ from rm import rm_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
+from getgit import getgit
 from settings import settings_begin_mess
 from delete_account import delete_account_main
 
@@ -115,6 +116,15 @@ def commands_main(bot):
 		global user_password
 		if user_password != None:
 			user_password = delete_account_main(message, bot, user_password)
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+
+	@bot.message_handler(commands=['getgit'])
+	def connect_to_git_handler_auth_main(message):
+		global user_password
+		if user_password != None:
+			getgit(message, bot)
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)

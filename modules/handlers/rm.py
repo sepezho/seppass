@@ -11,7 +11,7 @@ def rm_main(message, bot):
 	
 	if (len(command) == 2) and (message.text.find("..") == -1):
 		name = command[1]
-		file = '/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name
+		file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ name
 
 		if os.path.isfile(file+'.gpg'):
 			try:

@@ -3,7 +3,6 @@ import gnupg
 import sqlite3
 import auth
 from telebot import types
-from telebot import types
 from del_mess import del_mess
 
 
@@ -20,7 +19,7 @@ def login_pass_query(message, bot_old, settings_old):
 
 def finish_login(message):
 	try:
-		os.mkdir('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id))
+		os.mkdir('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id))
 	
 	except TypeError as e:
 		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
@@ -61,7 +60,7 @@ def finish_login(message):
 
 	if settings["store_pass"] == "pass_serv":
 		try:
-			with open('/home/sepezho/Documents/seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
+			with open('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
 				f.write(message.text)
 		
 		except TypeError as e:
