@@ -3,6 +3,7 @@ from auth import auth_main
 from del_mess import del_mess
 
 sys.path.append('./modules/handlers')
+sys.path.append('./modules/git')
 from touch import touch_main
 from mkd import mkd_main
 from cat import cat_main
@@ -11,7 +12,8 @@ from rm import rm_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
-from getgit import getgit
+from getsshkey import getsshkey
+from git_clone import git_clone
 from settings import settings_begin_mess
 from delete_account import delete_account_main
 
@@ -120,11 +122,20 @@ def commands_main(bot):
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
 
-	@bot.message_handler(commands=['getgit'])
-	def connect_to_git_handler_auth_main(message):
+	@bot.message_handler(commands=['getsshkey'])
+	def generate_ssh_key_handler_auth_main(message):
 		global user_password
 		if user_password != None:
-			getgit(message, bot)
+			getsshkey(message, bot)
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+	
+	@bot.message_handler(commands=['gitclone'])
+	def git_clone_rep_handler_auth_main(message):
+		global user_password
+		if user_password != None:
+			git_clone(message, bot)
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)

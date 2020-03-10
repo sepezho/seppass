@@ -60,7 +60,7 @@ def finish_login(message):
 
 	if settings["store_pass"] == "pass_serv":
 		try:
-			with open('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'w') as f:
+			with open('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + 'user_data/Nothing.txt', 'w') as f:
 				f.write(message.text)
 		
 		except TypeError as e:

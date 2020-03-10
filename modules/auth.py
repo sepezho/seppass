@@ -53,7 +53,7 @@ def finish_auth(message):
 	
 	if res_parse["store_pass"] == 'pass_server':
 		try:
-			with open('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/Nothing.txt', 'r') as f:
+			with open('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt', 'r') as f:
 				password = f.read()
 			msg = bot.send_message(message.chat.id, 'Вы аутентифицировались.')
 			del_mess(msg, bot, 2)

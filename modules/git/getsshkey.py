@@ -1,14 +1,60 @@
 import os
-from git import Git
-from git import Repo
-import git
+import os
 from telebot import types
 from Crypto.PublicKey import RSA
 
 from del_mess import del_mess
 
+def getsshkey(message, bot_old):
+	global bot
+	bot = bot_old
+	git_ssh_cmd = None
 
-def getgit(message, bot_old):
+	path_to_ssh = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)+'/user_data'
+
+	try:
+
+		key = RSA.generate(4096)
+		key_pub = None
+
+		with open(path_to_ssh+'/ssh_key', 'wb') as content_file:
+		    content_file.write(key.exportKey('PEM'))
+		    os.chmod(path_to_ssh+'/ssh_key', int('0600', base=8))
+		
+		with open(path_to_ssh+'/ssh_key.pub', 'wb') as content_file:
+			pubkey = key.publickey()
+			key_pub = pubkey.exportKey('OpenSSH')
+			content_file.write(pubkey.exportKey('OpenSSH'))
+		
+		# ssh_code = '#!/bin/bash\nssh -i '+path_to_ssh+'/key -oIdentitiesOnly=yes -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null "$@"'
+		ssh_code = '#!/bin/sh\nID_RSA='+path_to_ssh+'/ssh_key\nexec /usr/bin/ssh -o StrictHostKeyChecking=no -i $ID_RSA "$@"'
+
+		with open(path_to_ssh+'/ssh_script.sh', 'w') as content_file:
+			content_file.write(str(ssh_code))
+			os.chmod(path_to_ssh+'/ssh_script.sh', int('0600', base=8))
+		
+		markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+		markup.add('Да')
+		msg_handler = bot.send_message(message.chat.id, 'Вот ваш публичный ключ. Сами знаете куда его сувать...\n\n'+key_pub.decode("utf-8") + '\n\nЗакончили?',reply_markup = markup)
+		bot.register_next_step_handler(msg_handler, end_get_git)
+		return
+
+	except TypeError as e:
+		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		del_mess(msg, bot, 2)
+		return
+
+
+def end_get_git(message):
+	del_mess(message, bot, 3)
+
+
+
+
+
+
+"""
+def getsshkey(message, bot_old):
 	global bot
 	global path
 	global path_to_user_folder
@@ -116,3 +162,5 @@ def init(src_to_remote_repo, path_to_repo, path_to_ssh, git_ssh_cmd):
 		# repo.index.push()
 
 	# src_to_remote_repo = Repo.clone_from(src_to_remote_repo, path, env={'GIT_SSH': user['ssh']})
+
+"""
