@@ -1,16 +1,14 @@
-import sys
 import telebot
-from telebot import types
-sys.path.append('./modules')
+
+from sys import path
+path.append('./modules')
 from commands import commands_main
 
-url = "socks5://sockduser:f2%kE%.)as!S@46.101.118.222:6666"
-
+proxy_url = "socks5://sockduser:f2%kE%.)as!S@46.101.118.222:6666"
 telebot.apihelper.proxy = {
-	'http': url,
-	'https': url
+	'http': proxy_url,
+	'https': proxy_url
 }
-
 bot = telebot.TeleBot("1028700604:AAHqqv3JQSvkmUubsjS442EFpUMUULKmPYg")
 
 
@@ -21,14 +19,14 @@ def message_handler_start_main(message):
 		' GPG ключем, пароль от которого знаете только вы (конечно если выбрали пункт "хранить пароль у себя" в настройках).'+
 		'\n\nИспользуйте /auth, чтобы войти в акк, или создать его. Используйте команду /help, если растерялись.\n\nУдачи.'
 		)
-
+	return
 
 @bot.message_handler(commands=['help'])
 def message_handler_auth_main(message):
 	bot.send_message(message.chat.id,
 	'Команды и их описание, которые может выполнять этот бот.\n\n'+
 	'╠═══════════════════════════╣\n'+
-	'  Команды, доступные без авторизации:\n'+
+	'  Команды, доступные всегда:\n'+
 	'╠═══════════════════════════╣\n\n'+
 	'/start - Приветствие, и небольшое описание возможностей бота.\n\n'+
 	'/auth - Авторизация пользователя, для дальнейшей работы.\n\n'+
@@ -46,16 +44,21 @@ def message_handler_auth_main(message):
 	'/rm - Удаляет запись.\nИспользуйте так: /rm папка/имя_записи.\n\n'+
 	'/mv - Перемещает запись.\nИспользуйте так: /mv начальная_папка/имя_записи конечная_папка/имя_записи.\n\n'+
 	'/logout - Выход из аккаунта.\n\n'+
-	'/delete_account - Удаление аккаунта. Но зачем? Не покидайте меня :c \n\n'+
-	'/getsshkey - Генерация 4096-битного ssh ключа.\n\n'+
-	'/settings - Настройки.'
+	'/deleteacc - Удаление аккаунта. Но зачем? Не покидайте меня :c \n\n'+
+	'/settings - Настройки.\n\n'+
+	'╠═══════════════════════════╣\n'+
+	'  Команды, связанные с git-ом:\n'+
+	'╠═══════════════════════════╣\n\n'+
+	'/gitgenssh - Генерация 4096-битного ssh ключа.\n\n'+
+	'/gitclone - Клон репозитория с вашими записями на сервер !!ПОСЛЕ ПОДКЛЮЧЕНИЯ ПО SSH!!'
 	)
+	return
 
 
 @bot.message_handler(commands=['about'])
 def message_handler_auth_main(message):
-	markup = types.InlineKeyboardMarkup()
-	markup.add(types.InlineKeyboardButton(text= 'Сайт разработчика.', url='https://sepezho.ru'))
+	markup = telebot.types.InlineKeyboardMarkup()
+	markup.add(telebot.types.InlineKeyboardButton(text= 'Сайт разработчика.', url='https://sepezho.ru'))
 	bot.send_message(message.chat.id,
 		'═══════╣ Created by SEPEZHO ╠═══════\n'+
 		'Btw by this guy: Vladislav Bliznyuk\n'+
@@ -65,7 +68,10 @@ def message_handler_auth_main(message):
 		'Have a nice day\n'+
 		'═══════╣ Created by SEPEZHO ╠═══════\n',
 		reply_markup=markup)
+	return
 
 
 commands_main(bot)
+
+
 bot.polling()

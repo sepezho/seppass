@@ -1,10 +1,10 @@
-import os
-import shutil
+from os import path
+from shutil import move
 from del_mess import del_mess
 
 def mv_main(message, bot):
 	command = message.text.split()
-	msg = None
+
 	if len(command) == 3:
 
 		path = command[1]
@@ -15,16 +15,14 @@ def mv_main(message, bot):
 		if path_to[0] == '/':
 			path_to = path_to[1:]
 		
-		full_path = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ path
-		full_path_to = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/'+ path_to
+		full_path = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ path
+		full_path_to = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ path_to
 
-		if os.path.isfile(full_path+'.gpg'):
-			if not(os.path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
-				if not(os.path.isdir(full_path_to+'/'+path.split('/')[-1])):
-					msg = bot.send_message(message.chat.id,'Папка с таким названием в конечной директории уже существует.\n\n')
-				else:
+		if path.isfile(full_path+'.gpg'):
+			if not(path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
+				if not(path.isdir(full_path_to+'/'+path.split('/')[-1])):
 					try:
-						shutil.move(full_path+'.gpg', full_path_to+'/'+path.split('/')[-1]+'.gpg')
+						move(full_path+'.gpg', full_path_to+'/'+path.split('/')[-1]+'.gpg')
 					
 					except TypeError as e:
 						msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
@@ -32,19 +30,26 @@ def mv_main(message, bot):
 						return
 
 					if path_to == '':
-						path_to='user_' + str(message.from_user.id)
+						path_to = '/main'
 
 					msg = bot.send_message(message.chat.id, 'Файл '+path.split('/')[-1]+' перемещен в '+path_to+'.')
+					del_mess(msg, bot, 2)
+					return
+				
+				else:
+					msg = bot.send_message(message.chat.id,'Папка с таким названием в конечной директории уже существует.\n\n')
+					del_mess(msg, bot, 2)
+					return
 			else:
 				msg = bot.send_message(message.chat.id, 'В конечной папке уже существует такой файл.')
-		elif os.path.isdir(full_path):
-			if not(os.path.isdir(full_path_to+'/'+path.split('/')[-1])):
-				if not(os.path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
-					msg = bot.send_message(message.chat.id,'Файл с таким названием в конечной папке уже существует.\n\n')
+				del_mess(msg, bot, 2)
+				return
 
-				else:
+		elif path.isdir(full_path):
+			if not(path.isdir(full_path_to+'/'+path.split('/')[-1])):
+				if not(path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
 					try:
-						shutil.move(full_path, full_path_to+'/'+path.split('/')[-1])
+						move(full_path, full_path_to+'/'+path.split('/')[-1])
 					
 					except TypeError as e:
 						msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
@@ -52,13 +57,25 @@ def mv_main(message, bot):
 						return
 					
 					if path_to == '':
-						path_to='user_' + str(message.from_user.id)
+						path_to = '/main'
 
 					msg = bot.send_message(message.chat.id, 'Папка '+path.split('/')[-1]+' перемещена в '+path_to+'.')
+					del_mess(msg, bot, 2)
+					return
+
+				else:
+					msg = bot.send_message(message.chat.id,'Файл с таким названием в конечной папке уже существует.\n\n')
+					del_mess(msg, bot, 2)
+					return
 			else:
-				msg = bot.send_message(message.chat.id, 'В конечной папке уже существует такая папка.')
+				msg = bot.send_message(message.chat.id, 'В конечной директории уже существует такая папка.')
+				del_mess(msg, bot, 2)
+				return
 		else:
 			msg = bot.send_message(message.chat.id, 'Такого пути не существует.')
+			del_mess(msg, bot, 2)
+			return
 	else:
 		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mv начальный_путь конечный_путь (начальный путь указывается с названием перемещаемого папки/файла, конеченый путь - без).')
-	del_mess(msg, bot, 2)
+		del_mess(msg, bot, 2)
+		return

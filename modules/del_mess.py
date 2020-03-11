@@ -1,21 +1,16 @@
-import time
+message_to_delete = None
+num_to_delete = None
 
-message = None
-num_old = None
+def del_mess(message, bot, num):
+	global message_to_delete
+	global num_to_delete
 
-def del_mess(message_old, bot, num_old):
-	global message
-	global num
-
-	# time.sleep(30)
-	if message != None:
-		for i in range(num):
+	if message_to_delete != None:
+		for i in range(num_to_delete):
 			try:
-				bot.delete_message(message.chat.id, message.message_id - i)
-
-			except TypeError as e:
+				bot.delete_message(message_to_delete.chat.id, message_to_delete.message_id - i)
+			except:
 				print('DELETE_ERROR')
-				return
-
-	num = num_old
-	message = message_old
+				
+	message_to_delete = message
+	num_to_delete = num
