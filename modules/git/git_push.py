@@ -7,7 +7,7 @@ from del_mess import del_mess
 
 def git_push(message, bot):
 	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
-	git_push_action(message, bot, path_to_user_folder)
+	push_to_repo(message, bot, path_to_user_folder)
 	# if path.isfile(path_to_user_folder+'/user_data/ssh_key'):
 	# 	msg_handler = bot.send_message(message.chat.id, 'Введите ссылку на свой репозиторий.')
 	# 	bot.register_next_step_handler(msg_handler, lambda msg: clone_repo(msg, bot, path_to_user_folder))
@@ -18,7 +18,7 @@ def git_push(message, bot):
 	# 	return
 
 
-def git_push_action(message, bot, path_to_user_folder):
+def push_to_repo(message, bot, path_to_user_folder):
 	git_ssh_cmd = path_to_user_folder + '/user_data/ssh_script.sh'
 
 	try:

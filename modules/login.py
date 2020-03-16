@@ -12,9 +12,10 @@ def login_pass_query(message, bot, settings):
 
 
 def finish_login(message, bot, settings):
+	user_root_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)
 	try:
-		makedirs('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)+'/main')
-		makedirs('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)+'/user_data')
+		makedirs(user_root_folder+'/main')
+		makedirs(user_root_folder+'/user_data')
 	
 	except TypeError as e:
 		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
@@ -55,7 +56,7 @@ def finish_login(message, bot, settings):
 
 	if settings["store_pass"] == "pass_serv":
 		try:
-			with open('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt', 'w') as f:
+			with open(user_root_folder+'/user_data/Nothing.txt', 'w') as f:
 				f.write(message.text)
 		
 		except TypeError as e:

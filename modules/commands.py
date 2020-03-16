@@ -8,11 +8,13 @@ from touch import touch_main
 from mkd import mkd_main
 from cat import cat_main
 from ls import ls_main
+from clear_all import clear_all_main
 from rm import rm_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
 from git_gen_ssh import git_gen_ssh
+from git_init import git_init
 from git_clone import git_clone
 from git_push import git_push
 from settings import settings_begin_mess
@@ -78,6 +80,15 @@ def commands_main(bot):
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
 
+	@bot.message_handler(commands=['clearall'])
+	def clear_all_main_handler_main(message):
+		global user_password
+		if user_password != None:
+			clear_all_main(message, bot)
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+
 	@bot.message_handler(commands=['rm'])
 	def rm_handler_main(message):
 		global user_password
@@ -132,6 +143,15 @@ def commands_main(bot):
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
 	
+	@bot.message_handler(commands=['gitinit'])
+	def git_init_rep_handler_main(message):
+		global user_password
+		if user_password != None:
+			git_init(message, bot)
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+
 	@bot.message_handler(commands=['gitclone'])
 	def git_clone_rep_handler_main(message):
 		global user_password
@@ -149,6 +169,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
+
 
 	@bot.message_handler(commands=['settings'])
 	def settings_handler_main(message):
