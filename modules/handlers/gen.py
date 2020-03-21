@@ -53,17 +53,17 @@ def pass_gen(command):
 		chars = 'abgoBCDPpqrstuAQRSEFGHIJvwxyZ123456zKWhijklnXY7890LMNcdefOTUV'
 	
 	elif int(command[3]) == 1:
-		chars = '"c(lnop234qrBCDvwEFstuxyz+=*?:%;№AGHdefgh-)IJKL<.~`/|M189N567ijk_OPQRSTUV!,}{[]>abWXYZ0'
+		chars = '"c(lnop234qrBCDvwEFstuxyz+=*?:%;AGHdefgh-)IJKL<.~`/|M189N567ijk_OPQRSTUV!,}{[]>abWXYZ0'
 	
 	elif int(command[3]) == 2:
-		chars = '+-)=_GHI<.~`/|abcde_-)=_GHIJKLMNOP{[]><.~ghrstu:%;№"!,}9JKLMNOP{[]>vwxy=_zABC{[]>ijklnopq<.~`/|+XYZ1234%;№"!,}56EFQRSTUVW(*?:78-)(*?0'
+		chars = '+-)=_GHI<.~`/|abcde_-)=_GHIJKLMNOP{[]><.~ghrstu:%;"!,}9JKLMNOP{[]>vwxy=_zABC{[]>ijklnopq<.~`/|+XYZ1234%;"!,}56EFQRSTUVW(*?:78-)(*?0'
 	
 	else:
 		msg = bot.send_message(message.chat.id,'Сложность пароля варьируется от 0 до 2.')
 		del_mess(msg, bot, 2)
 		return
 
-	# USED SYMBOLS: "+=_-)(*?:%;№"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	# USED SYMBOLS: "+=_-)(*?:%;"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	for i in range(int(command[2])):
 		password += choice(chars)
 	

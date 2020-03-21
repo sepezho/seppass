@@ -35,6 +35,6 @@ def mkd_main(message, bot):
 			del_mess(msg, bot, 2)
 			return
 	else:
-		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mkd папка/имя_записи')
+		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /mkd папка/папка')
 		del_mess(msg, bot, 2)
 		return

@@ -156,7 +156,7 @@ def commands_main(bot):
 	def git_clone_rep_handler_main(message):
 		global user_password
 		if user_password != None:
-			git_clone(message, bot)
+			git_clone(message, bot, user_password)
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)

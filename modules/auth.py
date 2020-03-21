@@ -70,7 +70,7 @@ def finish_auth(message, bot):
 		result_available.wait()
 		return pas
 
-def finish_auth_pass(message):
+def finish_auth_pass(message, bot):
 	t_str = 'test_ur_crappy_password_str'
 	decrypt = None
 	

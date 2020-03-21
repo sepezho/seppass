@@ -1,5 +1,6 @@
 from os import makedirs
 from os import system
+from os import path
 from gnupg import GPG
 from sqlite3 import connect
 from telebot import types
@@ -14,8 +15,10 @@ def login_pass_query(message, bot, settings):
 def finish_login(message, bot, settings):
 	user_root_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)
 	try:
-		makedirs(user_root_folder+'/main')
-		makedirs(user_root_folder+'/user_data')
+		if not path.isdir(user_root_folder+'/main'):
+			makedirs(user_root_folder+'/main')
+		if not path.isdir(user_root_folder+'/user_data'):
+			makedirs(user_root_folder+'/user_data')
 	
 	except TypeError as e:
 		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
@@ -30,6 +33,13 @@ def finish_login(message, bot, settings):
 			)
 		key = gpg.gen_key(input_data)
 		key = key.fingerprint
+
+		ascii_armored_private_keys = gpg.export_keys(key, True, passphrase=message.text)
+		with open(user_root_folder+'/user_data/gpg_private_key.asc', 'w') as f:
+			f.write(ascii_armored_private_keys)
+		with open(user_root_folder+'/main/gpg_private_key.asc', 'w') as f:
+			f.write(ascii_armored_private_keys)
+
 		system('echo RELOADAGENT | gpg-connect-agent')
 
 	except TypeError as e:
@@ -54,7 +64,7 @@ def finish_login(message, bot, settings):
 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 	markup.add('Да')
 
-	if settings["store_pass"] == "pass_serv":
+	if settings["store_pass"] == "pass_server":
 		try:
 			with open(user_root_folder+'/user_data/Nothing.txt', 'w') as f:
 				f.write(message.text)

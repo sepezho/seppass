@@ -3,3 +3,4 @@ Dependencies:
 	pyTelegramBotAPI;
 	python-gnupg;
 	requests[socks];
+	gitpython

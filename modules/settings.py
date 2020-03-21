@@ -174,8 +174,8 @@ def finish_settings_auth(message):
 				f.write(password)
 		
 		else:
-			if os.path.isfile('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt'):
-				os.remove('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt')
+			if path.isfile('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt'):
+				remove('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt')
 	except TypeError as e:
 		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
 		del_mess(msg, bot, 2)

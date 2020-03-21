@@ -7,15 +7,13 @@ from del_mess import del_mess
 
 def git_push(message, bot):
 	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
-	push_to_repo(message, bot, path_to_user_folder)
-	# if path.isfile(path_to_user_folder+'/user_data/ssh_key'):
-	# 	msg_handler = bot.send_message(message.chat.id, 'Введите ссылку на свой репозиторий.')
-	# 	bot.register_next_step_handler(msg_handler, lambda msg: clone_repo(msg, bot, path_to_user_folder))
+	if path.isfile(path_to_user_folder+'/user_data/ssh_key'):
+		push_to_repo(message, bot, path_to_user_folder)
 
-	# else:
-	# 	msg = bot.send_message(message.chat.id, 'Для начала создайте ssh ключ (при помощи gitgenssh), и закинте его на свой github.')
-	# 	del_mess(msg, bot, 2)
-	# 	return
+	else:
+		msg = bot.send_message(message.chat.id, 'Для начала создайте ssh ключ (при помощи gitgenssh), и закинте его на свой github.')
+		del_mess(msg, bot, 2)
+		return
 
 
 def push_to_repo(message, bot, path_to_user_folder):

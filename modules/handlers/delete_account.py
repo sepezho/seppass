@@ -25,7 +25,7 @@ def delete_account_handler(message, bot, password):
 		bot.register_next_step_handler(msg_handler, lambda msg: delete_account_handler_finish(msg, bot, password))
 	
 	else:
-		bot.send_message(message.chat.id, 'Вы бредите.')
+		msg = bot.send_message(message.chat.id, 'Вы бредите.')
 		del_mess(msg, bot, 4)
 		return password
 
@@ -33,9 +33,9 @@ def delete_account_handler(message, bot, password):
 def delete_account_handler_finish(message, bot, password):
 	if message.text == 'Надо.':
 		try:
-			rm_db(str(message.from_user.id))
+			rm_db(str(message.from_user.id), password)
 			rm_folder(str(message.from_user.id))
-			bot.send_message(message.chat.id, 'Прощайте!\n\n*звуки смерти*', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			msg = bot.send_message(message.chat.id, 'Прощайте!\n\n*звуки смерти*', reply_markup = types.ReplyKeyboardRemove(selective=False))
 			del_mess(msg, bot, 6)
 			return None
 
@@ -45,29 +45,29 @@ def delete_account_handler_finish(message, bot, password):
 			return None
 
 	elif message.text == 'Я передумал.':
-		bot.send_message(message.chat.id, 'Фууух, не пугайте меня так....', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		msg = bot.send_message(message.chat.id, 'Фууух, не пугайте меня так....', reply_markup = types.ReplyKeyboardRemove(selective=False))
 		del_mess(msg, bot, 6)
 		return password
 
 	else:
-		bot.send_message(message.chat.id, 'Вы бредите.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		msg = bot.send_message(message.chat.id, 'Вы бредите.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 		del_mess(msg, bot, 6)
 		return password
 	
 
-def rm_key(key):
+def rm_key(key, password):
 	gpg = GPG()
 	gpg.delete_keys(key, True, passphrase=password)
 	gpg.delete_keys(key)
 	system('echo RELOADAGENT | gpg-connect-agent')
 
 
-def rm_db(user_id):
+def rm_db(user_id, password):
 	conn = connect('DataBase.db', check_same_thread=False)
 	c = conn.cursor()
 	query = "SELECT Key FROM Users WHERE User_id = 'user_"+str(user_id)+"'"
 	key = c.execute(query).fetchall()[0][0]
-	rm_key(key)
+	rm_key(key, password)
 	query = "DELETE FROM Users WHERE User_id = 'user_"+str(user_id)+"'"
 	c.execute(query)
 	conn.commit()
