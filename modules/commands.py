@@ -11,12 +11,14 @@ from ls import ls_main
 from clear_all import clear_all_main
 from rm import rm_main
 from mv import mv_main
+from change_pass import change_pass
 from gen import gen_main
 from edit import edit_main
 from git_gen_ssh import git_gen_ssh
 from git_init import git_init
 from git_clone import git_clone
 from git_push import git_push
+from git_pull import git_pull
 from settings import settings_begin_mess
 from delete_account import delete_account_main
 
@@ -107,6 +109,15 @@ def commands_main(bot):
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
 
+	@bot.message_handler(commands=['changepass'])
+	def change_pass_handler_main(message):
+		global user_password
+		if user_password != None:
+			change_pass(message, bot)
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+
 	@bot.message_handler(commands=['gen'])
 	def gen_handler_main(message):
 		global user_password
@@ -170,6 +181,14 @@ def commands_main(bot):
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
 
+	@bot.message_handler(commands=['gitpull'])
+	def git_pull_rep_handler_main(message):
+		global user_password
+		if user_password != None:
+			git_pull(message, bot)
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['settings'])
 	def settings_handler_main(message):

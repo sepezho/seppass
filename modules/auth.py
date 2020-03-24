@@ -79,11 +79,11 @@ def finish_auth_pass(message, bot):
 		encrypt = gpg.encrypt(t_str, recipients='user_'+str(message.from_user.id))
 		decrypt = gpg.decrypt(str(encrypt), passphrase=str(message.text))
 		system('echo RELOADAGENT | gpg-connect-agent')
-	
+
 	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
-		del_mess(msg, bot, 4)
-		result_available.set()
+	 	msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	 	del_mess(msg, bot, 4)
+	 	result_available.set()
 	
 	if str(decrypt) == t_str:
 		global pas

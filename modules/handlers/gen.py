@@ -9,7 +9,7 @@ from del_mess import del_mess
 def gen_main(message, bot):
 	command = message.text.split()
 	
-	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)+'/main'
+	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)+'/main'
 	
 	if (len(command) == 4) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):
 		name = command[1]
@@ -46,7 +46,7 @@ def gen_main(message, bot):
 		return
 
 
-def pass_gen(command):
+def pass_gen(command, message, bot):
 	password = ''
 	
 	if int(command[3]) == 0:
@@ -61,7 +61,7 @@ def pass_gen(command):
 	else:
 		msg = bot.send_message(message.chat.id,'Сложность пароля варьируется от 0 до 2.')
 		del_mess(msg, bot, 2)
-		return
+		return False
 
 	# USED SYMBOLS: "+=_-)(*?:%;"!,}{[]><.~`/|abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	for i in range(int(command[2])):
@@ -97,17 +97,19 @@ def generate_req(message, bot, command, path_to_user_folder, name):
 			del_mess(msg, bot, num+1)
 			return
 
-	password = pass_gen(command)
-	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-	markup.add('Да')
-	markup.add('Сгенерировать новую')
-	markup.add('Выйти')
+	password = pass_gen(command, message, bot)
+	if password:
+		markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+		markup.add('Да')
+		markup.add('Сгенерировать новую')
+		markup.add('Выйти')
 
-	mes = bot.send_message(message.chat.id,'Запись сгенерированна:\n\n'+password+'\n\nСохранить?', reply_markup = markup)
-	bot.register_next_step_handler(mes, finish_gen)
+		mes = bot.send_message(message.chat.id,'Запись сгенерированна:\n\n'+password+'\n\nСохранить?', reply_markup = markup)
+		bot.register_next_step_handler(mes, finish_gen)
 
 
 def gen_pass_query(password, user_id, path_to_user_folder, name):
+	print('1')
 	val_old = '/'
 	part = name.split('/')
 
