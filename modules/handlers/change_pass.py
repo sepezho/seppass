@@ -1,18 +1,29 @@
-from gnupg import GPG
+# from gnupg import GPG
+# from os import system
+# from sqlite3 import connect
 from del_mess import del_mess
 
 def change_pass(message, bot):
 	try:
-		gpg = GPG()
-		key_arr = gpg.search_keys('user_'+str(message.from_user.id), '<sepezho@desktop>')
-		# key_arr = gpg.list_keys('user_'+str(message.from_user.id))
-		print(str(key_arr))
-		print('---------')
-		print(key_arr[0].keyid)
 
-		system('echo RELOADAGENT | gpg-connect-agent')
+		# conn = connect('DataBase.db', check_same_thread=False)
+		# c = conn.cursor()
+		# query = "SELECT Key FROM Users WHERE User_id = 'user_"+str(message.from_user.id)+"'"
+		# key = c.execute(query).fetchall()[0][0]
 
-		msg = bot.send_message(message.chat.id, 'Я закончил.')
+		# conn.commit()
+		# conn.close()
+
+		# # gpg = GPG()
+
+		# print('---------')
+
+		# system('gpg --edit-key '+key+' ; passwd '+' ; pass ; '+'123'+' ; save ; '+'Q')
+		# # system('echo RELOADAGENT | gpg-connect-agent')
+		# # system('echo RELOADAGENT | gpg-connect-agent')
+		# system('echo RELOADAGENT | gpg-connect-agent')
+
+		msg = bot.send_message(message.chat.id, 'Функция не работает, извините.')
 		del_mess(msg, bot, 2)
 		return
 
