@@ -8,7 +8,7 @@ def ls_main(message, bot):
 	command = message.text.split()
 	way = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/main'
 	
-	if (len(command) == 2):
+	if len(command) == 2:
 		if (message.text.find('//') == -1) and (message.text.find('.') == -1):
 			way = way + '/' + command[1]
 			
@@ -31,15 +31,9 @@ def ls_main(message, bot):
 			del_mess(msg, bot, 2)
 			return
 
-
 	elif len(command) == 1:
 		text = ls(way)
 		msg = bot.send_message(message.chat.id, text)
-		del_mess(msg, bot, 2)
-		return
-
-	else: 
-		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /ls папка/папка (или просто /ls)')
 		del_mess(msg, bot, 2)
 		return
 

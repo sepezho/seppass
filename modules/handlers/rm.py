@@ -11,42 +11,37 @@ from del_mess import del_mess
 def rm_main(message, bot):
 	command = message.text.split()
 
-	if (len(command) == 2) and (message.text.find("..") == -1):
-		name = command[1]
-		if name == '/' or name == '*':
-			name = ''
-		file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ name
+	name = command[1]
+	if name == '/' or name == '*':
+		name = ''
+	file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ name
 
-		if path.isfile(file+'.gpg'):
-			try:
-				remove(file+'.gpg')
-				msg = bot.send_message(message.chat.id, 'Запись '+name+' удалена.')
-				del_mess(msg, bot, 2)
-				return
-
-			except TypeError as e:
-				msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
-				del_mess(msg, bot, 2)
-				return
-		
-		elif path.isdir(file):
-			markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-			markup.add('Да, я уверен')
-			markup.add('Нет')
-
-			text = ls(file)
-			msg_handler = bot.send_message(message.chat.id, 'Вы уверены, что хотите удалить папку '+name+' и все ее содержимое?\n'+ text, reply_markup = markup)
-			bot.register_next_step_handler(msg_handler, lambda msg: finish_rm_folder(msg, bot, file, name))
-
-		else:
-			msg = bot.send_message(message.chat.id, 'Такой записи/папки не существует.')
+	if path.isfile(file+'.gpg'):
+		try:
+			remove(file+'.gpg')
+			msg = bot.send_message(message.chat.id, 'Запись '+name+' удалена.')
 			del_mess(msg, bot, 2)
 			return
 
+		except TypeError as e:
+			msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+			del_mess(msg, bot, 2)
+			return
+	
+	elif path.isdir(file):
+		markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+		markup.add('Да, я уверен')
+		markup.add('Нет')
+
+		text = ls(file)
+		msg_handler = bot.send_message(message.chat.id, 'Вы уверены, что хотите удалить папку '+name+' и все ее содержимое?\n'+ text, reply_markup = markup)
+		bot.register_next_step_handler(msg_handler, lambda msg: finish_rm_folder(msg, bot, file, name))
+
 	else:
-		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /rm папка/имя_записи')
+		msg = bot.send_message(message.chat.id, 'Такой записи/папки не существует.')
 		del_mess(msg, bot, 2)
 		return
+
 
 
 def finish_rm_folder(message, bot, file, name):

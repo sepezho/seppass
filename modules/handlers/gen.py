@@ -11,37 +11,30 @@ def gen_main(message, bot):
 	
 	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)+'/main'
 	
-	if (len(command) == 4) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):
-		name = command[1]
-		
-		if not path.isfile(path_to_user_folder +'/'+ name+'.gpg'):
-			if not path.isdir(path_to_user_folder +'/'+ name):
-				if len(name.split('/')) < 9:
-					if int(command[2]) < 26:
-						generate_req(message, bot, command, path_to_user_folder, name)
-
-					else:
-						msg = bot.send_message(message.chat.id,'Макс. длина генерации - 25 симболов.')
-						del_mess(msg, bot, 2)
-						return
+	name = command[1]
+	if not path.isfile(path_to_user_folder +'/'+ name+'.gpg'):
+		if not path.isdir(path_to_user_folder +'/'+ name):
+			if len(name.split('/')) < 9:
+				if int(command[2]) < 26:
+					generate_req(message, bot, command, path_to_user_folder, name)
 
 				else:
-					msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
+					msg = bot.send_message(message.chat.id,'Макс. длина генерации - 25 симболов.')
 					del_mess(msg, bot, 2)
 					return
 
 			else:
-				msg = bot.send_message(message.chat.id,'Папка с таким названием уже сужествует в этой директории.\n\n')
+				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 				del_mess(msg, bot, 2)
 				return
 
 		else:
-			msg = bot.send_message(message.chat.id,'Файл с таким названием в этой папке уже существует.\n\n')
+			msg = bot.send_message(message.chat.id,'Папка с таким названием уже сужествует в этой директории.\n\n')
 			del_mess(msg, bot, 2)
 			return
 
 	else:
-		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /gen папка/имя_записи 12 1')
+		msg = bot.send_message(message.chat.id,'Файл с таким названием в этой папке уже существует.\n\n')
 		del_mess(msg, bot, 2)
 		return
 

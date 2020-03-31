@@ -1,6 +1,8 @@
 from os import makedirs
 from os import system
 from os import path
+import sys
+sys.path.append('./modules/third_party')
 from gnupg import GPG
 from sqlite3 import connect
 from telebot import types

@@ -8,29 +8,23 @@ def touch_main(message, bot):
 	command = message.text.split()
 	way = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)+'/main'
 	
-	if (len(command) == 2) and (command[1].find('//') == -1) and (command[1].find('.') == -1) and (command[1][0] != '/') and (command[1][-1] != '/'):
-		name = command[1]
-		if not path.isfile(way +'/'+ name+'.gpg'):
-			if not path.isdir(way +'/'+ name):
-				if len(name.split('/')) < 9:
-					msg_handler = bot.send_message(message.chat.id,'Отправте свою запись (не бойтесь, за ее сохранность, я ее удалю из ваших сообщений).')
-					bot.register_next_step_handler(msg_handler, lambda msg: touch_pass_query(msg, bot, way, name))
+	name = command[1]
+	if not path.isfile(way +'/'+ name+'.gpg'):
+		if not path.isdir(way +'/'+ name):
+			if len(name.split('/')) < 9:
+				msg_handler = bot.send_message(message.chat.id,'Отправте свою запись (не бойтесь, за ее сохранность, я ее удалю из ваших сообщений).')
+				bot.register_next_step_handler(msg_handler, lambda msg: touch_pass_query(msg, bot, way, name))
 
-				else:
-					msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
-					del_mess(msg, bot, 2)
-					return
 			else:
-				msg = bot.send_message(message.chat.id,'Папка с таким названием уже сужествует в этой директории.')
+				msg = bot.send_message(message.chat.id,'Вы хотите создать очень много папок. Макс. глубина - 7 папок. Зачем вам столько -.-')
 				del_mess(msg, bot, 2)
 				return
 		else:
-			msg = bot.send_message(message.chat.id,'Файл с таким названием в этой папке уже существует.')
+			msg = bot.send_message(message.chat.id,'Папка с таким названием уже сужествует в этой директории.')
 			del_mess(msg, bot, 2)
 			return
-
 	else:
-		msg = bot.send_message(message.chat.id,'Используйте правильный синтаксис: /touch папка/имя_записи')
+		msg = bot.send_message(message.chat.id,'Файл с таким названием в этой папке уже существует.')
 		del_mess(msg, bot, 2)
 		return
 
