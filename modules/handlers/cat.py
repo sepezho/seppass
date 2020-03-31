@@ -29,8 +29,8 @@ def cat_main(message, bot, password):
 				del_mess(msg, bot, 3)
 				return
 
-		except TypeError as e:
-			msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		except:
+			msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 			del_mess(msg, bot, 2)
 			return
 	else:

@@ -3,7 +3,7 @@
 # from sqlite3 import connect
 from del_mess import del_mess
 
-def change_pass(message, bot):
+def change_pass_main(message, bot):
 	try:
 
 		# conn = connect('DataBase.db', check_same_thread=False)
@@ -27,7 +27,7 @@ def change_pass(message, bot):
 		del_mess(msg, bot, 2)
 		return
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return

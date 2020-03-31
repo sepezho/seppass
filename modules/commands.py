@@ -8,9 +8,9 @@ path.append('./modules/handlers')
 path.append('./modules/git')
 from auth import auth_main
 from settings import settings_begin_mess
-from change_pass import change_pass
+from change_pass import change_pass_main
 from delete_account import delete_account_main
-from clear_all import clear_all_main
+from rm_all import rm_all_main
 from rm import rm_main
 from touch import touch_main
 from mkd import mkd_main
@@ -19,11 +19,11 @@ from ls import ls_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
-from git_gen_ssh import git_gen_ssh
-from git_init import git_init
-from git_clone import git_clone
-from git_push import git_push
-from git_pull import git_pull
+from git_gen_ssh import git_gen_ssh_main
+from git_init import git_init_main
+from git_clone import git_clone_main
+from git_push import git_push_main
+from git_pull import git_pull_main
 
 user_password = None
 
@@ -77,11 +77,11 @@ def commands_main(bot):
 			del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['changepass'])
-	def change_pass_handler_main(message):
+	def change_pass_main_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				change_pass(message, bot)
+				change_pass_main(message, bot)
 
 			else:
 				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /changepass')
@@ -106,15 +106,15 @@ def commands_main(bot):
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
 	
-	@bot.message_handler(commands=['clearall'])
-	def clear_all_main_handler_main(message):
+	@bot.message_handler(commands=['rmall'])
+	def rm_all_main_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				clear_all_main(message, bot)
+				rm_all_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /clearall')
+				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /rmall')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -242,11 +242,11 @@ def commands_main(bot):
 			del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['gitgenssh'])
-	def git_gen_ssh_key_handler_main(message):
+	def git_gen_ssh_main_key_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				git_gen_ssh(message, bot)
+				git_gen_ssh_main(message, bot)
 
 			else:
 				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitgenssh')
@@ -257,11 +257,11 @@ def commands_main(bot):
 			del_mess(msg, bot, 2)
 	
 	@bot.message_handler(commands=['gitinit'])
-	def git_init_rep_handler_main(message):
+	def git_init_main_rep_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				git_init(message, bot)
+				git_init_main(message, bot)
 
 			else:
 				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitinit')
@@ -272,11 +272,11 @@ def commands_main(bot):
 			del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['gitclone'])
-	def git_clone_rep_handler_main(message):
+	def git_clone_main_rep_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				git_clone(message, bot, user_password)
+				git_clone_main(message, bot, user_password)
 
 			else:
 				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitclone')
@@ -287,11 +287,11 @@ def commands_main(bot):
 			del_mess(msg, bot, 2)
 	
 	@bot.message_handler(commands=['gitpush'])
-	def git_push_rep_handler_main(message):
+	def git_push_main_rep_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				git_push(message, bot)
+				git_push_main(message, bot)
 
 			else:
 				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitpush')
@@ -302,11 +302,11 @@ def commands_main(bot):
 			del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['gitpull'])
-	def git_pull_rep_handler_main(message):
+	def git_pull_main_rep_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				git_pull(message, bot)
+				git_pull_main(message, bot)
 
 			else:
 				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitpull')

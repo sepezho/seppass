@@ -10,7 +10,7 @@ def del_mess(message, bot, num):
 			try:
 				bot.delete_message(message_to_delete.chat.id, message_to_delete.message_id - i)
 			except:
-				print('DELETE_ERROR')
+				print('delete_error')
 				
 	message_to_delete = message
 	num_to_delete = num

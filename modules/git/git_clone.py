@@ -9,29 +9,48 @@ from shutil import rmtree
 from shutil import copy2
 from telebot import types
 from del_mess import del_mess
+from ls import ls
 
 
-def git_clone(message, bot, password):
+def git_clone_main(message, bot, password):
 	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
+	text = ls(path_to_user_folder+'/main')
+	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+	markup.add('Да')
+	markup.add('Нет')
+	msg_handler = bot.send_message(message.chat.id, 'Вы действительно хотите удалить все содержимое папки /main, и клонировать репозиторий с gitHub?\n\n'+text, reply_markup = markup)
+	bot.register_next_step_handler(msg_handler, lambda msg: git_clone_main_request(msg, bot, path_to_user_folder, password))
 
-	if path.isfile(path_to_user_folder+'/user_data/ssh_key'):
-		msg_handler = bot.send_message(message.chat.id, 'Введите ссылку на свой репозиторий.')
-		bot.register_next_step_handler(msg_handler, lambda msg: clone_repo(msg, bot, path_to_user_folder, password))
+def git_clone_main_request(message, bot, path_to_user_folder, password):
+	if message.text == 'Да':
+		if path.isfile(path_to_user_folder+'/user_data/ssh_key.pub'):
+			msg_handler = bot.send_message(message.chat.id, 'Введите ссылку на свой репозиторий.')
+			bot.register_next_step_handler(msg_handler, lambda msg: clone_repo(msg, bot, path_to_user_folder, password))
 
-	else:
-		msg = bot.send_message(message.chat.id, 'Для начала создайте ssh ключ (при помощи gitgenssh), и закинте его на свой github.')
-		del_mess(msg, bot, 2)
+		else:
+			msg = bot.send_message(message.chat.id, 'Для начала создайте ssh ключ (при помощи /gitgenssh), и закинте его на свой gitHub.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			del_mess(msg, bot, 4)
+			return
+	
+	elif message.text == 'Нет':
+		msg = bot.send_message(message.chat.id, 'Отмена.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		del_mess(msg, bot, 4)
 		return
 
+	else:
+		msg = bot.send_message(message.chat.id, 'Я вас не понял ._.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		del_mess(msg, bot, 4)
+		return
 
 def clone_repo(message, bot, path_to_user_folder, password):
 	git_ssh_cmd = path_to_user_folder + '/user_data/ssh_script.sh'
+	
 	try:
-		if path.isdir(path_to_user_folder+'/main'):
-			rmtree(path_to_user_folder+'/main')
+		rmtree(path_to_user_folder+'/main')
 		
 		with Git().custom_environment(GIT_SSH_COMMAND=git_ssh_cmd):
 			Repo.clone_from(str(message.text), path_to_user_folder+'/main')		
+			
 			if path.isfile(path_to_user_folder+'/main/gpg_private_key.asc'):
 				markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 				markup.add('Да')
@@ -40,17 +59,18 @@ def clone_repo(message, bot, path_to_user_folder, password):
 				bot.register_next_step_handler(msg_handler, lambda msg: db_change_plus_copy(msg, bot, str(message.from_user.id), password, path_to_user_folder))
 			
 			else:
-				msg = bot.send_message(message.chat.id, 'Я закончил.')
-				del_mess(msg, bot, 2)
+				msg = bot.send_message(message.chat.id, 'Я закончил.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+				del_mess(msg, bot, 4)
 				return
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
-		del_mess(msg, bot, 2)
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		del_mess(msg, bot, 4)
 		return
 
 
 def db_change_plus_copy(message, bot, user_id, password, path_to_user_folder):
+	
 	if message.text == 'Да':
 		conn = connect('DataBase.db', check_same_thread=False)
 		c = conn.cursor()
@@ -72,16 +92,17 @@ def db_change_plus_copy(message, bot, user_id, password, path_to_user_folder):
 
 		else:
 			msg = bot.send_message(message.chat.id, 'Я закончил.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-			del_mess(msg, bot, 4)
+			del_mess(msg, bot, 6)
 			return
 
 	else:
 		msg = bot.send_message(message.chat.id, 'Хорошо, оставлю старый ключ.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-		del_mess(msg, bot, 4)
+		del_mess(msg, bot, 6)
 		return
 
 
 def key_edit(key, password, path_to_user_folder):
+	
 	try:
 		gpg = GPG()
 		gpg.delete_keys(key, True, passphrase=password)
@@ -94,34 +115,35 @@ def key_edit(key, password, path_to_user_folder):
 		copy2(path_to_user_folder+'/main/gpg_private_key.asc', path_to_user_folder+'/user_data/gpg_private_key.asc')
 		return new_key
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
-		del_mess(msg, bot, 2)
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		del_mess(msg, bot, 6)
 		return key
 
 
 def finish_clone_pass(message, bot, path_to_user_folder):
+	
 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 	markup.add('Да')
 	markup.add('Нет')
 	markup.add('Отмена')
-
 	msg_handler = bot.send_message(message.chat.id, 'Вы уверены, что этот пароль правильный?\n\n'+message.text, reply_markup = markup)
 	bot.register_next_step_handler(msg_handler, lambda msg: write_pass_in_nothing(msg, bot, message.text, path_to_user_folder))
 
 
 def write_pass_in_nothing(message, bot, password, path_to_user_folder):
+	
 	if message.text == 'Да':
 		try:
 			with open(path_to_user_folder+'/user_data/Nothing.txt', 'w') as f:
 				f.write(password)
 			msg = bot.send_message(message.chat.id, 'Пароль сохранен.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-			del_mess(msg, bot, 4)
+			del_mess(msg, bot, 6)
 			return
 
-		except TypeError as e:
-			msg = bot.send_message(message.chat.id, 'Error: '+ str(e), reply_markup = types.ReplyKeyboardRemove(selective=False))
-			del_mess(msg, bot, 2)
+		except:
+			msg = bot.send_message(message.chat.id, 'Произошла ошибка.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			del_mess(msg, bot, 6)
 			return
 
 	elif message.text == 'Нет':
@@ -130,6 +152,6 @@ def write_pass_in_nothing(message, bot, password, path_to_user_folder):
 
 	else:
 		msg = bot.send_message(message.chat.id, 'Я закончил.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-		del_mess(msg, bot, 4)
+		del_mess(msg, bot, 6)
 		return
 

@@ -1,14 +1,47 @@
 from Crypto.PublicKey import RSA
 from os import system
 from os import chmod
+from os import path
 from telebot import types
 
 from del_mess import del_mess
 
 
-def git_gen_ssh(message, bot):
+def git_gen_ssh_main(message, bot):
 	path_to_user_data = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)+'/user_data'
+	
+	if path.isfile(path_to_user_data+'/ssh_key.pub'):
+		markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+		markup.add('Просмотреть существующий')
+		markup.add('Создать новый')
+		msg_handler = bot.send_message(message.chat.id, 'Я нашел ssh ключ. Ты хочешь создать новый или увидеть существующий?',reply_markup = markup)
+		bot.register_next_step_handler(msg_handler, lambda msg: git_gen_request(msg, bot, path_to_user_data))
+	
+	else:
+		git_gen_body(message, bot, path_to_user_data)
 
+
+def git_gen_request(message, bot, path_to_user_data):
+	
+	if message.text == 'Просмотреть существующий':
+		with open(path_to_user_data+'/ssh_key.pub', 'r') as key_pub:
+			markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+			markup.add('Да')
+			msg_handler = bot.send_message(message.chat.id, 'Вот ваш публичный ключ. Сами знаете куда его сувать...\n\n'+key_pub.read() + '\n\nЗакончили?',reply_markup = markup)
+			bot.register_next_step_handler(msg_handler, lambda msg: end_get_git(msg, bot))
+			return
+
+	elif message.text == 'Создать новый':
+		git_gen_body(message, bot, path_to_user_data)
+	
+	else:
+		msg = bot.send_message(message.chat.id, 'Я тебя не понял ._.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		del_mess(msg, bot, 4)
+		return
+
+
+def git_gen_body(message, bot, path_to_user_data):
+	
 	try:
 		key = RSA.generate(4096)
 		key_pub = None
@@ -29,20 +62,19 @@ def git_gen_ssh(message, bot):
 			chmod(path_to_user_data+'/ssh_script.sh', int('0600', base=8))
 		
 		system('ssh-add ../Users_folder/user_'+str(message.from_user.id)+'/user_data/ssh_key')
-		
 		markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 		markup.add('Да')
 		msg_handler = bot.send_message(message.chat.id, 'Вот ваш публичный ключ. Сами знаете куда его сувать...\n\n'+key_pub.decode("utf-8") + '\n\nЗакончили?',reply_markup = markup)
 		bot.register_next_step_handler(msg_handler, lambda msg: end_get_git(msg, bot))
 		return
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 		del_mess(msg, bot, 2)
 		return
 
 
 def end_get_git(message, bot):
-	msg = bot.send_message(message.chat.id, 'Теперь вы можете использовать git-комманды.')
-	del_mess(msg, bot, 4)
+	msg = bot.send_message(message.chat.id, 'Теперь вы можете использовать git-комманды.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+	del_mess(msg, bot, 6)
 	return

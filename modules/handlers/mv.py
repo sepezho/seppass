@@ -22,8 +22,8 @@ def mv_main(message, bot):
 				try:
 					move(full_path+'.gpg', full_path_to+'/'+path.split('/')[-1]+'.gpg')
 				
-				except TypeError as e:
-					msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+				except:
+					msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 					del_mess(msg, bot, 2)
 					return
 
@@ -49,8 +49,8 @@ def mv_main(message, bot):
 				try:
 					move(full_path, full_path_to+'/'+path.split('/')[-1])
 				
-				except TypeError as e:
-					msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+				except:
+					msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 					del_mess(msg, bot, 2)
 					return
 				

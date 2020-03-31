@@ -22,8 +22,8 @@ def finish_login(message, bot, settings):
 		if not path.isdir(user_root_folder+'/user_data'):
 			makedirs(user_root_folder+'/user_data')
 	
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return
 
@@ -44,8 +44,8 @@ def finish_login(message, bot, settings):
 
 		system('echo RELOADAGENT | gpg-connect-agent')
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return
 
@@ -58,8 +58,8 @@ def finish_login(message, bot, settings):
 		conn.commit()
 		conn.close()
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return
 
@@ -71,8 +71,8 @@ def finish_login(message, bot, settings):
 			with open(user_root_folder+'/user_data/Nothing.txt', 'w') as f:
 				f.write(message.text)
 		
-		except TypeError as e:
-			msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		except:
+			msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 			del_mess(msg, bot, 2)
 			return
 

@@ -17,8 +17,8 @@ def mkd_main(message, bot):
 					del_mess(msg, bot, 2)
 					return
 					
-				except TypeError as e:
-					msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+				except:
+					msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 					del_mess(msg, bot, 2)
 					return
 			else:

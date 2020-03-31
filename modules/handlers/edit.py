@@ -33,7 +33,7 @@ def rm_and_create_file(message, bot, file, name):
 		del_mess(msg, bot, 2)
 		return
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 4)
 		return

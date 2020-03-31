@@ -163,8 +163,8 @@ def finish_settings_auth(message):
 		conn.commit()
 		conn.close()
 	
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return
 	
@@ -176,8 +176,8 @@ def finish_settings_auth(message):
 		else:
 			if path.isfile('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt'):
 				remove('/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) + '/user_data/Nothing.txt')
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return
 

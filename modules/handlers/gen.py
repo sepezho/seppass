@@ -76,8 +76,8 @@ def generate_req(message, bot, command, path_to_user_folder, name):
 				del_mess(msg, bot, num+1)
 				return
 
-			except TypeError as e:
-				msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+			except:
+				msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 				del_mess(msg, bot, num+1)
 				return
 

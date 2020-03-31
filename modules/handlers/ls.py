@@ -77,12 +77,12 @@ def ls(root_folder):
 		else:
 			response_arr[index_file] =  line(file, root_folder)+last_symbol+'📂 '+file_name
 
-	response_text = '╠══════════════════════════════╣\n\n'+'  📂 '+''.join(root_folder.split('/')[-1])+'\n  ╔══════════════\n'
+	response_text = '╠════════════════════════════╣\n\n'+'  📂 '+''.join(root_folder.split('/')[-1])+'\n  ╔══════════════\n'
 	
 	for response_arr_text in response_arr:
 		response_text +='  '+response_arr_text+'\n'
 
-	response_text +='\n╠══════════════════════════════╣'
+	response_text +='\n╠════════════════════════════╣'
 	return response_text
 
 

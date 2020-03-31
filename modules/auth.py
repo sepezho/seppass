@@ -23,8 +23,8 @@ def auth_main(message, bot):
 		conn.commit()
 		conn.close()
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return None
 
@@ -46,8 +46,8 @@ def finish_auth(message, bot):
 		conn.commit()
 		conn.close()
 
-	except TypeError as e:
-		msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return None
 	
@@ -59,8 +59,8 @@ def finish_auth(message, bot):
 			del_mess(msg, bot, 2)
 			return password
 
-		except TypeError as e:
-			msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+		except:
+			msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 			del_mess(msg, bot, 2)
 			return None
 
@@ -80,8 +80,8 @@ def finish_auth_pass(message, bot):
 		decrypt = gpg.decrypt(str(encrypt), passphrase=str(message.text))
 		system('echo RELOADAGENT | gpg-connect-agent')
 
-	except TypeError as e:
-	 	msg = bot.send_message(message.chat.id, 'Error: '+ str(e))
+	except:
+	 	msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 	 	del_mess(msg, bot, 4)
 	 	result_available.set()
 	
