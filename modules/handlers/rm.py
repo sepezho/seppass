@@ -3,7 +3,6 @@ from os import path
 from os import walk
 from shutil import rmtree
 from telebot import types
-
 from ls import ls
 from del_mess import del_mess
 

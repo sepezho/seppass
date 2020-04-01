@@ -46,7 +46,8 @@ def clone_repo(message, bot, path_to_user_folder, password):
 	git_ssh_cmd = path_to_user_folder + '/user_data/ssh_script.sh'
 	
 	try:
-		rmtree(path_to_user_folder+'/main')
+		if path.isdir(path_to_user_folder+'/main'):
+			rmtree(path_to_user_folder+'/main')
 		
 		with Git().custom_environment(GIT_SSH_COMMAND=git_ssh_cmd):
 			Repo.clone_from(str(message.text), path_to_user_folder+'/main')		
@@ -123,35 +124,34 @@ def key_edit(key, password, path_to_user_folder):
 
 def finish_clone_pass(message, bot, path_to_user_folder):
 	
-	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-	markup.add('Да')
-	markup.add('Нет')
-	markup.add('Отмена')
-	msg_handler = bot.send_message(message.chat.id, 'Вы уверены, что этот пароль правильный?\n\n'+message.text, reply_markup = markup)
-	bot.register_next_step_handler(msg_handler, lambda msg: write_pass_in_nothing(msg, bot, message.text, path_to_user_folder))
-
-
-def write_pass_in_nothing(message, bot, password, path_to_user_folder):
+	t_str = 'test_ur_crappy_password_str'
+	decrypt = None
 	
-	if message.text == 'Да':
+	try:
+		gpg = GPG()
+		encrypt = gpg.encrypt(t_str, recipients='user_'+str(message.from_user.id))
+		decrypt = gpg.decrypt(str(encrypt), passphrase=message.text)
+		system('echo RELOADAGENT | gpg-connect-agent')
+
+	except:
+	 	msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
+	 	del_mess(msg, bot, 8)
+	 	return
+	
+	if str(decrypt) == t_str:
 		try:
 			with open(path_to_user_folder+'/user_data/Nothing.txt', 'w') as f:
-				f.write(password)
+				f.write(message.text)
 			msg = bot.send_message(message.chat.id, 'Пароль сохранен.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-			del_mess(msg, bot, 6)
+			del_mess(msg, bot, 8)
 			return
 
 		except:
 			msg = bot.send_message(message.chat.id, 'Произошла ошибка.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-			del_mess(msg, bot, 6)
+			del_mess(msg, bot, 8)
 			return
 
-	elif message.text == 'Нет':
-		msg_handler = bot.send_message(message.chat.id, 'Введите пароль от нового ключа.\n\n(Если с паролем не уверены, то пока не вышли из бота, измените настройки на вводить пароль при входе, в противном случае я могу сохранить не правельный пароль, и вы не сможете /auth)', reply_markup = types.ReplyKeyboardRemove(selective=False))
-		bot.register_next_step_handler(msg_handler, lambda msg: finish_clone_pass(msg, bot))
-
 	else:
-		msg = bot.send_message(message.chat.id, 'Я закончил.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-		del_mess(msg, bot, 6)
-		return
-
+		msg = bot.send_message(message.chat.id, 'Пароль не верен.')
+		msg_handler = bot.send_message(message.chat.id, 'Введите пароль от нового ключа, я его сохраню.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		bot.register_next_step_handler(msg_handler, lambda msg: finish_clone_pass(msg, bot, path_to_user_folder))

@@ -2,9 +2,9 @@ from os import path
 from git import Git
 from git import Actor
 from git import Repo
-from del_mess import del_mess
 from shutil import rmtree
 from telebot import types
+from del_mess import del_mess
 
 
 def git_init_main(message, bot):

@@ -1,6 +1,5 @@
 from sys import path
 
-path.append('./modules/third_party')
 from del_mess import del_mess
 from command_checker import command_checker
 
@@ -10,6 +9,7 @@ from auth import auth_main
 from settings import settings_begin_mess
 from change_pass import change_pass_main
 from delete_account import delete_account_main
+from download_data import download_data_main
 from rm_all import rm_all_main
 from rm import rm_main
 from touch import touch_main
@@ -105,7 +105,22 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-	
+		
+	@bot.message_handler(commands=['downloaddata'])
+	def download_data_main_rep_handler_main(message):
+		global user_password
+		if user_password != None:
+			if command_checker(message.text, 1, False):
+				download_data_main(message, bot)
+
+			else:
+				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /downloaddata')
+				del_mess(msg, bot, 2)
+
+		else:
+			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+			del_mess(msg, bot, 2)
+
 	@bot.message_handler(commands=['rmall'])
 	def rm_all_main_handler_main(message):
 		global user_password
@@ -315,7 +330,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-
+	
 	@bot.message_handler(func=lambda message: True, content_types=['text'])
 	def error(message):
 		if message.text[0] != '/':
