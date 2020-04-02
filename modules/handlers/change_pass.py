@@ -1,5 +1,5 @@
 # from gnupg import GPG
-# from os import system
+from os import system
 # from sqlite3 import connect
 from del_mess import del_mess
 
@@ -31,3 +31,5 @@ def change_pass_main(message, bot):
 		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
 		del_mess(msg, bot, 2)
 		return
+
+# system('gpg --edit-key DEE5CEB6C829400FA10EFDF2E5E42C4F28C5413B && passwd && pass && 123 && 123 && save && Q')
