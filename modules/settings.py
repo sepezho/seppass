@@ -13,7 +13,8 @@ def settings_begin_mess(message, bot_old, is_auth_import, password_old):
 	is_auth = is_auth_import
 	password = password_old
 	
-	bot.send_message(message.chat.id, 'Перейдем к настройкам.')
+	msg = bot.send_message(message.chat.id, 'Перейдем к настройкам.')
+	del_mess(msg, bot, 2)
 	settings_begin(message)
 
 

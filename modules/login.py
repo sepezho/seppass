@@ -24,7 +24,7 @@ def finish_login(message, bot, settings):
 	
 	except:
 		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
-		del_mess(msg, bot, 2)
+		del_mess(msg, bot, 4)
 		return
 
 	try:	
@@ -37,16 +37,16 @@ def finish_login(message, bot, settings):
 		key = key.fingerprint
 
 		ascii_armored_private_keys = gpg.export_keys(key, True, passphrase=message.text)
+		system('echo RELOADAGENT | gpg-connect-agent')
 		with open(user_root_folder+'/user_data/gpg_private_key.asc', 'w') as f:
 			f.write(ascii_armored_private_keys)
 		with open(user_root_folder+'/main/gpg_private_key.asc', 'w') as f:
 			f.write(ascii_armored_private_keys)
 
-		system('echo RELOADAGENT | gpg-connect-agent')
 
 	except:
 		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
-		del_mess(msg, bot, 2)
+		del_mess(msg, bot, 4)
 		return
 
 	try:
@@ -60,7 +60,7 @@ def finish_login(message, bot, settings):
 
 	except:
 		msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
-		del_mess(msg, bot, 2)
+		del_mess(msg, bot, 4)
 		return
 
 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -73,7 +73,7 @@ def finish_login(message, bot, settings):
 		
 		except:
 			msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
-			del_mess(msg, bot, 2)
+			del_mess(msg, bot, 4)
 			return
 
 		msg_handler = bot.send_message(message.chat.id, 'Регистрация прошла успешно. Пароль храниться на сервере.\n\nВаш user id:\n'+str(message.from_user.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key)+'\n\nЗапомнили? Я сейчас это сообщение удалю, в целях сохранности ваших данных.', reply_markup = markup)
@@ -87,5 +87,5 @@ def finish_login(message, bot, settings):
 def complete_finish_login(message, bot):
 	bot.send_message(message.chat.id, 'На этом мы закончим.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 	msg = bot.send_message(message.chat.id, 'Используйте /auth, чтобы войти.', reply_markup = types.ReplyKeyboardRemove(selective=False))
-	del_mess(msg, bot, 5)
+	del_mess(msg, bot, 6)
 	return

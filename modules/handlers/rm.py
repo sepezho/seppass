@@ -46,14 +46,15 @@ def rm_main(message, bot):
 def finish_rm_folder(message, bot, file, name):
 	if message.text == 'Да, я уверен':
 		try:
-			for root, dirs, files in walk(file):
-				for dir_ in dirs:
-					if (root+ '/' +dir_).find(".git") == -1:
-						rmtree(root+ '/' +dir_)
-				for file in files:
-					if (root+ '/' +file).endswith(".gpg"):
-						remove(path.join(root, file))
-
+			# for root, dirs, files in walk(file):
+			# 	for dir_ in dirs:
+			# 		if (root+ '/' +dir_).find(".git") == -1:
+			# 			rmtree(root+ '/' +dir_)
+			# 	for file in files:
+			# 		if (root+ '/' +file).endswith(".gpg"):
+			# 			remove(path.join(root, file))
+			rmtree(file)
+			
 			msg = bot.send_message(message.chat.id, 'Папка '+name+', и все ее содержимое удалено.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 			del_mess(msg, bot, 4)
 			return

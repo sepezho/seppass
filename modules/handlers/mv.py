@@ -5,22 +5,22 @@ from del_mess import del_mess
 def mv_main(message, bot):
 	command = message.text.split()
 
-	path = command[1]
+	path_from = command[1]
 	path_to = command[2]
 	
-	if path[0] == '/':
-		path = path[1:]
+	if path_from[0] == '/':
+		path_from = path_from[1:]
 	if path_to[0] == '/':
 		path_to = path_to[1:]
 	
-	full_path = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ path
+	full_path = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ path_from
 	full_path_to = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ path_to
 
 	if path.isfile(full_path+'.gpg'):
-		if not(path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
-			if not(path.isdir(full_path_to+'/'+path.split('/')[-1])):
+		if not(path.isfile(full_path_to+'/'+path_from.split('/')[-1]+'.gpg')):
+			if not(path.isdir(full_path_to+'/'+path_from.split('/')[-1])):
 				try:
-					move(full_path+'.gpg', full_path_to+'/'+path.split('/')[-1]+'.gpg')
+					move(full_path+'.gpg', full_path_to+'/'+path_from.split('/')[-1]+'.gpg')
 				
 				except:
 					msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
@@ -30,7 +30,7 @@ def mv_main(message, bot):
 				if path_to == '':
 					path_to = '/main'
 
-				msg = bot.send_message(message.chat.id, 'Файл '+path.split('/')[-1]+' перемещен в '+path_to+'.')
+				msg = bot.send_message(message.chat.id, 'Файл '+path_from.split('/')[-1]+' перемещен в '+path_to+'.')
 				del_mess(msg, bot, 2)
 				return
 			
@@ -44,10 +44,10 @@ def mv_main(message, bot):
 			return
 
 	elif path.isdir(full_path):
-		if not(path.isdir(full_path_to+'/'+path.split('/')[-1])):
-			if not(path.isfile(full_path_to+'/'+path.split('/')[-1]+'.gpg')):
+		if not(path.isdir(full_path_to+'/'+path_from.split('/')[-1])):
+			if not(path.isfile(full_path_to+'/'+path_from.split('/')[-1]+'.gpg')):
 				try:
-					move(full_path, full_path_to+'/'+path.split('/')[-1])
+					move(full_path, full_path_to+'/'+path_from.split('/')[-1])
 				
 				except:
 					msg = bot.send_message(message.chat.id, 'Произошла ошибка.')
@@ -57,7 +57,7 @@ def mv_main(message, bot):
 				if path_to == '':
 					path_to = '/main'
 
-				msg = bot.send_message(message.chat.id, 'Папка '+path.split('/')[-1]+' перемещена в '+path_to+'.')
+				msg = bot.send_message(message.chat.id, 'Папка '+path_from.split('/')[-1]+' перемещена в '+path_to+'.')
 				del_mess(msg, bot, 2)
 				return
 
