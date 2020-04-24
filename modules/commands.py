@@ -19,7 +19,8 @@ from ls import ls_main
 from mv import mv_main
 from gen import gen_main
 from edit import edit_main
-from git_gen_ssh import git_gen_ssh_main
+# from git_gen_ssh import git_gen_ssh_main
+from git_token import git_token_main
 from git_init import git_init_main
 from git_clone import git_clone_main
 from git_push import git_push_main
@@ -35,11 +36,11 @@ def commands_main(bot):
 		if user_password != None:
 			msg = bot.send_message(message.chat.id, 'Вы уже аутентифицировались.')
 			del_mess(msg, bot, 2)
-		
+
 		else:
 			if command_checker(message.text, 1, False):
 				user_password = auth_main(message, bot)
-			
+
 			else:
 				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /auth')
 				del_mess(msg, bot, 2)
@@ -60,7 +61,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Чтобы выйти, надо войти, используя /auht.\n\n(с) Конфуций.')
 			del_mess(msg, bot, 2)
-	
+
 	@bot.message_handler(commands=['settings'])
 	def settings_handler_main(message):
 		global user_password
@@ -90,7 +91,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-			
+
 	@bot.message_handler(commands=['deleteacc'])
 	def delete_account_handler_main(message):
 		global user_password
@@ -105,7 +106,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-		
+
 	@bot.message_handler(commands=['downloaddata'])
 	def download_data_main_rep_handler_main(message):
 		global user_password
@@ -210,7 +211,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-	
+
 	@bot.message_handler(commands=['mv'])
 	def mv_handler_main(message):
 		global user_password
@@ -240,7 +241,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-	
+
 	@bot.message_handler(commands=['edit'])
 	def edit_handler_main(message):
 		global user_password
@@ -256,23 +257,38 @@ def commands_main(bot):
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
 
-	@bot.message_handler(commands=['gitgenssh'])
-	def git_gen_ssh_main_key_handler_main(message):
+	# @bot.message_handler(commands=['gitgenssh'])
+	# def git_gen_ssh_handler_main(message):
+	# 	global user_password
+	# 	if user_password != None:
+	# 		if command_checker(message.text, 1, False):
+	# 			git_gen_ssh_main(message, bot)
+	#
+	# 		else:
+	# 			msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitgenssh')
+	# 			del_mess(msg, bot, 2)
+	#
+	# 	else:
+	# 		msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
+	# 		del_mess(msg, bot, 2)
+
+	@bot.message_handler(commands=['gittoken'])
+	def git_token_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
-				git_gen_ssh_main(message, bot)
+				git_token_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitgenssh')
+				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gittoken')
 				del_mess(msg, bot, 2)
 
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-	
+
 	@bot.message_handler(commands=['gitinit'])
-	def git_init_main_rep_handler_main(message):
+	def git_init_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
@@ -287,7 +303,7 @@ def commands_main(bot):
 			del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['gitclone'])
-	def git_clone_main_rep_handler_main(message):
+	def git_clone_handler_main(message):
 		global user_password
 		if user_password != None:
 			if command_checker(message.text, 1, False):
@@ -300,7 +316,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-	
+
 	@bot.message_handler(commands=['gitpush'])
 	def git_push_main_rep_handler_main(message):
 		global user_password
@@ -330,7 +346,7 @@ def commands_main(bot):
 		else:
 			msg = bot.send_message(message.chat.id, 'Войдите, используя /auth')
 			del_mess(msg, bot, 2)
-	
+
 	@bot.message_handler(func=lambda message: True, content_types=['text'])
 	def error(message):
 		if message.text[0] != '/':

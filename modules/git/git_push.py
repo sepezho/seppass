@@ -7,7 +7,7 @@ from del_mess import del_mess
 
 def git_push_main(message, bot):
 	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
-	
+
 	if path.isdir(path_to_user_folder+'/main/.git'):
 		if path.isfile(path_to_user_folder+'/user_data/ssh_key'):
 			push_to_repo(message, bot, path_to_user_folder)
@@ -24,10 +24,11 @@ def git_push_main(message, bot):
 
 
 def push_to_repo(message, bot, path_to_user_folder):
-	git_ssh_cmd = path_to_user_folder + '/user_data/ssh_script.sh'
 
 	try:
-		with Git().custom_environment(GIT_SSH_COMMAND=git_ssh_cmd):
+		with open(path_to_user_folder+'/user_data/token.txt', 'r') as f:
+			token = f.read()
+		with Git().custom_environment(HTTPS_REMOTE_URL='https://'+token+':x-oauth-basic@'+message.text[8:]):
 			repo = Repo(path_to_user_folder+'/main')
 			author = Actor("seppass", "sepezho@gmail.com")
 			committer = Actor("seppass", "sepezho@gmail.com")
