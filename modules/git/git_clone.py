@@ -13,7 +13,7 @@ from ls import ls
 
 
 def git_clone_main(message, bot, password):
-	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
+	path_to_user_folder = '/Seppass/Users_folder/user_'+str(message.chat.id)
 	text = ls(path_to_user_folder+'/main')
 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 	markup.add('Да')
@@ -23,12 +23,12 @@ def git_clone_main(message, bot, password):
 
 def git_clone_main_request(message, bot, path_to_user_folder, password):
 	if message.text == 'Да':
-		if path.isfile(path_to_user_folder+'/user_data/ssh_key.pub'):
-			msg_handler = bot.send_message(message.chat.id, 'Введите ссылку на свой репозиторий.')
+		if path.isfile(path_to_user_folder+'/user_data/token.txt'):
+			msg_handler = bot.send_message(message.chat.id, 'Введите ссылку (ОБЯЗАТЕЛЬНО, ЧТОБ НАЧИНАЛАСЬ С HTTPS://) на свой репозиторий.')
 			bot.register_next_step_handler(msg_handler, lambda msg: clone_repo(msg, bot, path_to_user_folder, password))
 
 		else:
-			msg = bot.send_message(message.chat.id, 'Для начала создайте ssh ключ (при помощи /gitgenssh), и закинте его на свой gitHub.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+			msg = bot.send_message(message.chat.id, 'Для начала создайте token (при помощи /gittoken).', reply_markup = types.ReplyKeyboardRemove(selective=False))
 			del_mess(msg, bot, 4)
 			return
 
@@ -57,7 +57,7 @@ def clone_repo(message, bot, path_to_user_folder, password):
 				markup.add('Да')
 				markup.add('Нет')
 				msg_handler = bot.send_message(message.chat.id, 'Вы уверены, что хотите поменять gpg ключ на тот, который находися в репозитории?', reply_markup = markup)
-				bot.register_next_step_handler(msg_handler, lambda msg: db_change_plus_copy(msg, bot, str(message.from_user.id), password, path_to_user_folder))
+				bot.register_next_step_handler(msg_handler, lambda msg: db_change_plus_copy(msg, bot, str(message.chat.id), password, path_to_user_folder))
 
 			else:
 				msg = bot.send_message(message.chat.id, 'Я закончил.', reply_markup = types.ReplyKeyboardRemove(selective=False))
@@ -77,7 +77,7 @@ def db_change_plus_copy(message, bot, user_id, password, path_to_user_folder):
 		c = conn.cursor()
 		query = "SELECT Key FROM Users WHERE User_id = 'user_"+user_id+"'"
 		key = c.execute(query).fetchall()[0][0]
-		query = "SELECT Settings FROM Users WHERE User_id = 'user_"+str(message.from_user.id)+"'"
+		query = "SELECT Settings FROM Users WHERE User_id = 'user_"+str(message.chat.id)+"'"
 		res_arr = c.execute(query).fetchall()[0][0]
 		res_arr = res_arr.replace("'", '"')
 		res_parse = loads(res_arr)
@@ -129,7 +129,7 @@ def finish_clone_pass(message, bot, path_to_user_folder):
 
 	try:
 		gpg = GPG()
-		encrypt = gpg.encrypt(t_str, recipients='user_'+str(message.from_user.id))
+		encrypt = gpg.encrypt(t_str, recipients='user_'+str(message.chat.id))
 		decrypt = gpg.decrypt(str(encrypt), passphrase=message.text)
 		system('echo RELOADAGENT | gpg-connect-agent')
 

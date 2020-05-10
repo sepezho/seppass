@@ -5,14 +5,14 @@ from del_mess import del_mess
 
 
 def git_pull_main(message, bot):
-	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
+	path_to_user_folder = '/Seppass/Users_folder/user_'+str(message.chat.id)
 
 	if path.isdir(path_to_user_folder+'/main/.git'):
-		if path.isfile(path_to_user_folder+'/user_data/ssh_key'):
+		if path.isfile(path_to_user_folder+'/user_data/token.txt'):
 			pull_to_repo(message, bot, path_to_user_folder)
 
 		else:
-			msg = bot.send_message(message.chat.id, 'Для начала создайте ssh ключ (при помощи gitgenssh), и закинте его на свой github.')
+			msg = bot.send_message(message.chat.id, 'Для начала создайте token (при помощи /gittoken).')
 			del_mess(msg, bot, 2)
 			return
 	else:

@@ -6,7 +6,7 @@ from del_mess import del_mess
 
 def touch_main(message, bot):
 	command = message.text.split()
-	way = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)+'/main'
+	way = '/Seppass/Users_folder/user_' + str(message.chat.id)+'/main'
 	
 	name = command[1]
 	if not path.isfile(way +'/'+ name+'.gpg'):
@@ -40,7 +40,7 @@ def touch_pass_query(message, bot, way, name):
 		gpg = GPG()
 		gpg.encrypt(
 			message.text,
-			recipients=['user_'+str(message.from_user.id)],
+			recipients=['user_'+str(message.chat.id)],
 			output=way + '/' + name + '.gpg',
 		)
 

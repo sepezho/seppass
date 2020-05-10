@@ -2,7 +2,7 @@ from os import makedirs
 from os import system
 from os import path
 import sys
-sys.path.append('./modules/third_party')
+sys.path.append('/Seppass/modules/third_party')
 from gnupg import GPG
 from sqlite3 import connect
 from telebot import types
@@ -15,7 +15,7 @@ def login_pass_query(message, bot, settings):
 
 
 def finish_login(message, bot, settings):
-	user_root_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)
+	user_root_folder = '/Seppass/Users_folder/user_' + str(message.chat.id)
 	try:
 		if not path.isdir(user_root_folder+'/main'):
 			makedirs(user_root_folder+'/main')
@@ -31,7 +31,7 @@ def finish_login(message, bot, settings):
 		gpg = GPG()
 		input_data = gpg.gen_key_input(
 			passphrase=message.text,
-			name_real='user_'+str(message.from_user.id)
+			name_real='user_'+str(message.chat.id)
 			)
 		key = gpg.gen_key(input_data)
 		key = key.fingerprint
@@ -50,7 +50,7 @@ def finish_login(message, bot, settings):
 		return
 
 	try:
-		data = (('user_'+str(message.from_user.id), key, str(settings)))
+		data = (('user_'+str(message.chat.id), key, str(settings)))
 		conn = connect('DataBase.db', check_same_thread=False)
 		c = conn.cursor()
 		query = "INSERT INTO Users VALUES (?, ?, ?)"
@@ -76,11 +76,11 @@ def finish_login(message, bot, settings):
 			del_mess(msg, bot, 4)
 			return
 
-		msg_handler = bot.send_message(message.chat.id, 'Регистрация прошла успешно. Пароль храниться на сервере.\n\nВаш user id:\n'+str(message.from_user.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key)+'\n\nЗапомнили? Я сейчас это сообщение удалю, в целях сохранности ваших данных.', reply_markup = markup)
+		msg_handler = bot.send_message(message.chat.id, 'Регистрация прошла успешно. Пароль храниться на сервере.\n\nВаш user id:\n'+str(message.chat.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key)+'\n\nЗапомнили? Я сейчас это сообщение удалю, в целях сохранности ваших данных.', reply_markup = markup)
 		bot.register_next_step_handler(msg_handler, lambda msg: complete_finish_login(msg, bot))
 
 	else:
-		msg_handler = bot.send_message(message.chat.id, 'Регистрация прошла успешно. Запомните пароль, в случае его утери ваш акк не восстановить (пока).\n\nВаш user id:\n'+str(message.from_user.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key)+'\n\nЗапомнили? Я сейчас это сообщение удалю, в целях сохранности ваших данных.', reply_markup = markup)
+		msg_handler = bot.send_message(message.chat.id, 'Регистрация прошла успешно. Запомните пароль, в случае его утери ваш акк не восстановить (пока).\n\nВаш user id:\n'+str(message.chat.id)+'\n\nПароль:\n'+ message.text +'\n\nЭто ваш отпечаток ключа:\n'+ str(key)+'\n\nЗапомнили? Я сейчас это сообщение удалю, в целях сохранности ваших данных.', reply_markup = markup)
 		bot.register_next_step_handler(msg_handler, lambda msg: complete_finish_login(msg, bot))
 
 

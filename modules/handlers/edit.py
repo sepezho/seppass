@@ -8,7 +8,7 @@ def edit_main(message, bot):
 	command = message.text.split()
 	
 	name = command[1]
-	file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ name
+	file = '/Seppass/Users_folder/user_' + str(message.chat.id) +'/main/'+ name
 
 	if path.isfile(file+'.gpg'):
 		msg_handler = bot.send_message(message.chat.id,'Отправте новую запись (не бойтесь, за ее сохранность, я ее удалю из ваших сообщений).')
@@ -25,7 +25,7 @@ def rm_and_create_file(message, bot, file, name):
 		remove(file+'.gpg')
 		gpg.encrypt(
 	        message.text,
-	        recipients=['user_'+str(message.from_user.id)],
+	        recipients=['user_'+str(message.chat.id)],
 	        output= file + '.gpg',
 	    )
 		

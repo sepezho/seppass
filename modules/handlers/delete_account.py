@@ -33,8 +33,8 @@ def delete_account_handler(message, bot, password):
 def delete_account_handler_finish(message, bot, password):
 	if message.text == 'Надо.':
 		try:
-			rm_db(str(message.from_user.id), password)
-			rm_folder(str(message.from_user.id))
+			rm_db(str(message.chat.id), password)
+			rm_folder(str(message.chat.id))
 			msg = bot.send_message(message.chat.id, 'Прощайте!\n\n*звуки смерти*', reply_markup = types.ReplyKeyboardRemove(selective=False))
 			del_mess(msg, bot, 6)
 			return None
@@ -75,5 +75,5 @@ def rm_db(user_id, password):
 
 
 def rm_folder(user_id):
-	folder = '/home/sepezho/Documents/Seppass/Users_folder/user_' + user_id
+	folder = '/Seppass/Users_folder/user_' + user_id
 	rmtree(folder)

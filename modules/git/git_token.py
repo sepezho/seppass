@@ -3,7 +3,7 @@ from sqlite3 import connect
 from telebot import types
 
 def git_token_main(message, bot):
-	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
+	path_to_user_folder = '/Seppass/Users_folder/user_'+str(message.chat.id)
 
 	markup = types.InlineKeyboardMarkup()
 	markup.add(types.InlineKeyboardButton('Как создать токен?', url='https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line'))

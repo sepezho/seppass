@@ -8,11 +8,11 @@ from del_mess import del_mess
 
 
 def git_init_main(message, bot):
-	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)
+	path_to_user_folder = '/Seppass/Users_folder/user_'+str(message.chat.id)
 
-	if path.isfile(path_to_user_folder+'/user_data/ssh_key.pub'):
+	if path.isfile(path_to_user_folder+'/user_data/token.txt'):
 		if not path.isdir(path_to_user_folder+'/main/.git'):
-			msg_handler = bot.send_message(message.chat.id, 'Введите ссылку на свой новый, пустой репозиторий.\nДля этого создайте репу на гитхабе, а потом скопируйте ссылку, и отправьте мне.')
+			msg_handler = bot.send_message(message.chat.id, 'Введите ссылку (ОБЯЗАТЕЛЬНО, ЧТОБ НАЧИНАЛАСЬ С HTTPS://) на свой новый, пустой репозиторий.\nДля этого создайте репу на гитхабе, а потом скопируйте ссылку, и отправьте мне.')
 			bot.register_next_step_handler(msg_handler, lambda msg: init_repo(msg, bot, path_to_user_folder))
 
 		else:
@@ -25,14 +25,14 @@ def git_init_main(message, bot):
 			return
 
 	else:
-		msg = bot.send_message(message.chat.id, 'Для начала создайте ssh ключ (при помощи /gitgenssh), и закинте его на свой gitHub.')
+		msg = bot.send_message(message.chat.id, 'Для начала создайте token (при помощи /gittoken).')
 		del_mess(msg, bot, 2)
 		return
 
 def question_delete(message, bot, path_to_user_folder):
 	if message.text == 'Да':
 		rmtree(path_to_user_folder+'/main/.git')
-		msg_handler = bot.send_message(message.chat.id, 'Введите ссылку на свой новый, пустой репозиторий.\nДля этого создайте репу на гитхабе, а потом скопируйте ссылку, и отправьте мне.', reply_markup = types.ReplyKeyboardRemove(selective=False))
+		msg_handler = bot.send_message(message.chat.id, 'Введите ссылку (ОБЯЗАТЕЛЬНО, ЧТОБ НАЧИНАЛАСЬ С HTTPS://) на свой новый, пустой репозиторий.\nДля этого создайте репу на гитхабе, а потом скопируйте ссылку, и отправьте мне.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 		bot.register_next_step_handler(msg_handler, lambda msg: init_repo(msg, bot, path_to_user_folder))
 
 	else:

@@ -9,7 +9,7 @@ from del_mess import del_mess
 def gen_main(message, bot):
 	command = message.text.split()
 	
-	path_to_user_folder = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)+'/main'
+	path_to_user_folder = '/Seppass/Users_folder/user_'+str(message.chat.id)+'/main'
 	
 	name = command[1]
 	if not path.isfile(path_to_user_folder +'/'+ name+'.gpg'):
@@ -71,7 +71,7 @@ def generate_req(message, bot, command, path_to_user_folder, name):
 	def finish_gen(message):
 		if message.text == 'Да':
 			try:
-				gen_pass_query(password, str(message.from_user.id), path_to_user_folder, name)
+				gen_pass_query(password, str(message.chat.id), path_to_user_folder, name)
 				msg = bot.send_message(message.chat.id,'Запись '+name+' сохранена.', reply_markup = types.ReplyKeyboardRemove(selective=False))
 				del_mess(msg, bot, num+1)
 				return

@@ -8,7 +8,7 @@ def change_pass_main(message, bot):
 
 		# conn = connect('DataBase.db', check_same_thread=False)
 		# c = conn.cursor()
-		# query = "SELECT Key FROM Users WHERE User_id = 'user_"+str(message.from_user.id)+"'"
+		# query = "SELECT Key FROM Users WHERE User_id = 'user_"+str(message.chat.id)+"'"
 		# key = c.execute(query).fetchall()[0][0]
 
 		# conn.commit()

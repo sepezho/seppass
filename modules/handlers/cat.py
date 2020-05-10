@@ -7,7 +7,7 @@ def cat_main(message, bot, password):
 	command = message.text.split()
 	msg = None
 	name = command[1]
-	file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ name+'.gpg'
+	file = '/Seppass/Users_folder/user_' + str(message.chat.id) +'/main/'+ name+'.gpg'
 
 	if os.path.isfile(file):
 		try:

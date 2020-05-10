@@ -1,8 +1,8 @@
 import telebot
 
 from sys import path
-path.append('./modules')
-path.append('./modules/third_party')
+path.append('/Seppass/modules')
+path.append('/Seppass/modules/third_party')
 from commands import commands_main
 from del_mess import del_mess
 

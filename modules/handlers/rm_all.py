@@ -6,7 +6,7 @@ from del_mess import del_mess
 
 
 def rm_all_main(message, bot):
-	folder = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main'
+	folder = '/Seppass/Users_folder/user_' + str(message.chat.id) +'/main'
 
 	markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 	markup.add('Да, я уверен')

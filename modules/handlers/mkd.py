@@ -5,7 +5,7 @@ from del_mess import del_mess
 
 def mkd_main(message, bot):
 	command = message.text.split()
-	way = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id)+'/main/'
+	way = '/Seppass/Users_folder/user_' + str(message.chat.id)+'/main/'
 	
 	name = command[1]
 	if len(name.split('/')) < 9:

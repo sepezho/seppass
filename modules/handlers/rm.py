@@ -13,7 +13,7 @@ def rm_main(message, bot):
 	name = command[1]
 	if name == '/' or name == '*':
 		name = ''
-	file = '/home/sepezho/Documents/Seppass/Users_folder/user_' + str(message.from_user.id) +'/main/'+ name
+	file = '/Seppass/Users_folder/user_' + str(message.chat.id) +'/main/'+ name
 
 	if path.isfile(file+'.gpg'):
 		try:

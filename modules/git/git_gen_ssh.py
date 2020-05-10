@@ -8,7 +8,7 @@ from del_mess import del_mess
 
 
 def git_gen_ssh_main(message, bot):
-	path_to_user_data = '/home/sepezho/Documents/Seppass/Users_folder/user_'+str(message.from_user.id)+'/user_data'
+	path_to_user_data = '/Seppass/Users_folder/user_'+str(message.chat.id)+'/user_data'
 	
 	if path.isfile(path_to_user_data+'/ssh_key.pub'):
 		markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -61,7 +61,7 @@ def git_gen_body(message, bot, path_to_user_data):
 			content_file.write(str(ssh_code))
 			chmod(path_to_user_data+'/ssh_script.sh', int('0600', base=8))
 		
-		system('ssh-add ../Users_folder/user_'+str(message.from_user.id)+'/user_data/ssh_key')
+		system('ssh-add ../Users_folder/user_'+str(message.chat.id)+'/user_data/token.txt')
 		markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
 		markup.add('Да')
 		msg_handler = bot.send_message(message.chat.id, 'Вот ваш публичный ключ. Сами знаете куда его сувать...\n\n'+key_pub.decode("utf-8") + '\n\nЗакончили?',reply_markup = markup)

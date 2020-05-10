@@ -3,8 +3,8 @@ from sys import path
 from del_mess import del_mess
 from command_checker import command_checker
 
-path.append('./modules/handlers')
-path.append('./modules/git')
+path.append('/Seppass/modules/handlers')
+path.append('/Seppass/modules/git')
 from auth import auth_main
 from settings import settings_begin_mess
 from change_pass import change_pass_main
@@ -42,7 +42,7 @@ def commands_main(bot):
 				user_password = auth_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /auth')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /auth')
 				del_mess(msg, bot, 2)
 
 	@bot.message_handler(commands=['logout'])
@@ -55,7 +55,7 @@ def commands_main(bot):
 				del_mess(msg, bot, 2)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /logout')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /logout')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -70,7 +70,7 @@ def commands_main(bot):
 				settings_begin_mess(message, bot, True, user_password)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /settings')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /settings')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -85,7 +85,7 @@ def commands_main(bot):
 				change_pass_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /changepass')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /changepass')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -100,7 +100,7 @@ def commands_main(bot):
 				user_password = delete_account_main(message, bot, user_password)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /deleteacc')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /deleteacc')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -115,7 +115,7 @@ def commands_main(bot):
 				download_data_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /downloaddata')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /downloaddata')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -130,7 +130,7 @@ def commands_main(bot):
 				rm_all_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /rmall')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /rmall')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -145,7 +145,7 @@ def commands_main(bot):
 				rm_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /rm папка/имя_записи\n\n(или /rm папка/папка)')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /rm папка/имя_записи\n\n(или /rm папка/папка)')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -160,7 +160,7 @@ def commands_main(bot):
 				touch_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /touch папка/имя_записи')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /touch папка/имя_записи')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -175,7 +175,7 @@ def commands_main(bot):
 				mkd_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /mkd папка/папка')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /mkd папка/папка')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -190,7 +190,7 @@ def commands_main(bot):
 				cat_main(message, bot, user_password)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /cat папка/имя_записи')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /cat папка/имя_записи')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -205,7 +205,7 @@ def commands_main(bot):
 				ls_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /ls папка/папка\n\n(или просто /ls)')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /ls папка/папка\n\n(или просто /ls)')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -220,7 +220,7 @@ def commands_main(bot):
 				mv_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /mv начальный_путь конечный_путь\n\n(начальный путь указывается с названием перемещаемого папки/файла, конеченый путь - без)')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /mv начальный_путь конечный_путь\n\n(начальный путь указывается с названием перемещаемого папки/файла, конеченый путь - без)')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -235,7 +235,7 @@ def commands_main(bot):
 				gen_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gen папка/имя_записи длина_строки сложность_строки\n\n(Длина_строки - это число от 0 до 25;\nСложность_строки - это число от 0 до 2 (где 2 - это сложная строка))')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /gen папка/имя_записи длина_строки сложность_строки\n\n(Длина_строки - это число от 0 до 25;\nСложность_строки - это число от 0 до 2 (где 2 - это сложная строка))')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -250,7 +250,7 @@ def commands_main(bot):
 				edit_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /edit папка/имя_записи')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /edit папка/имя_записи')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -265,7 +265,7 @@ def commands_main(bot):
 	# 			git_gen_ssh_main(message, bot)
 	#
 	# 		else:
-	# 			msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitgenssh')
+	# 			msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /gitgenssh')
 	# 			del_mess(msg, bot, 2)
 	#
 	# 	else:
@@ -280,7 +280,7 @@ def commands_main(bot):
 				git_token_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gittoken')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /gittoken')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -295,7 +295,7 @@ def commands_main(bot):
 				git_init_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitinit')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /gitinit')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -310,7 +310,7 @@ def commands_main(bot):
 				git_clone_main(message, bot, user_password)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitclone')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /gitclone')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -325,7 +325,7 @@ def commands_main(bot):
 				git_push_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitpush')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /gitpush')
 				del_mess(msg, bot, 2)
 
 		else:
@@ -340,7 +340,7 @@ def commands_main(bot):
 				git_pull_main(message, bot)
 
 			else:
-				msg = bot.send_message(message.chat.id, 'Используйте правильный синтаксис: /gitpull')
+				msg = bot.send_message(message.chat.id, 'Я не перевариваю все кроме латиницы цифр и пробелов а еще знака "/". Если в строке есть посторонние символы, тогда убери их >:(\nИспользуйте правильный синтаксис: /gitpull')
 				del_mess(msg, bot, 2)
 
 		else:
